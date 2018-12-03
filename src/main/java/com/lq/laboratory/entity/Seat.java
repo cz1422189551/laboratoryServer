@@ -6,8 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Seat extends BaseEntity {
 
@@ -20,8 +24,12 @@ public class Seat extends BaseEntity {
     //别名
     private String rowName;
 
+    @ManyToMany(mappedBy = "seatList" )
+    private List<Laboratory> laboratory;
+
+
     public Seat(int rowIndex, int colIndex) {
-        this(FormatUtil.changeRow(rowIndex) + "" + rowIndex, rowIndex, colIndex);
+        this(FormatUtil.changeRow(rowIndex) + "" + colIndex,rowIndex,colIndex);
     }
 
     public Seat(String name, int rowIndex, int colIndex) {

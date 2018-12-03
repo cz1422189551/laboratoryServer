@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Data
-@Entity
+@Entity(name="laboratory_seat")
 public class LaboratorySeat extends BaseEntity {
 
     //座位的状态

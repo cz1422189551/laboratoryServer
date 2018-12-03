@@ -31,7 +31,7 @@ public class UserController {
     @RequestMapping("/{userName}/{password}")
     public ResponseEntity getOneByUserNameAndPassword(@PathVariable("userName") String userName, @PathVariable("password") String password) {
 
-        User user = userService.getUserByUserNameAndPassword(userName,password);
+        User user = userService.getUserByUserNameAndPassword(userName, password);
         return EntityFactory.createResponse(user);
     }
 
@@ -45,9 +45,10 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity add(@RequestBody User user) {
-        return EntityFactory.createResponse(userService.insert(user));
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public ResponseEntity add( User user) {
+        User u = new Student(1, "admin", "admin", "狮子吃咸鱼", "18807772672", true, STUDENT, new Date(), "广州", "计科本", "电信学院");
+        return EntityFactory.createResponse(userService.insert(u));
 
     }
 

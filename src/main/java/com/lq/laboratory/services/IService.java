@@ -1,6 +1,8 @@
 package com.lq.laboratory.services;
 
 import com.lq.laboratory.entity.Result;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
@@ -27,6 +29,14 @@ public interface IService<T> {
     int update(T t);
 
     boolean delete(String id);
+
+    default List<T> getList(Specification<T> specification, int pageNumber, int pageSize) {
+        return null;
+    }
+
+    default List<T> getAll(Specification<T> specification) {
+        return null;
+    }
 
     //清空表数据
     boolean clear();

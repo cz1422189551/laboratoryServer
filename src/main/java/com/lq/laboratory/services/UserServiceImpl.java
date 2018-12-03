@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Deprecated
+
     @Override
     public User getOne(String id) {
         User user = null;
