@@ -18,13 +18,23 @@ import static com.lq.laboratory.services.Const.TEACHER;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    IService<User> userService;
+    UserService userService;
 
     @RequestMapping("/one/{id}")
     public ResponseEntity getOne(@PathVariable("id") String id) {
+
         User user = userService.getOne(id);
         return EntityFactory.createResponse(user);
     }
+
+
+    @RequestMapping("/{userName}/{password}")
+    public ResponseEntity getOneByUserNameAndPassword(@PathVariable("userName") String userName, @PathVariable("password") String password) {
+
+        User user = userService.getUserByUserNameAndPassword(userName,password);
+        return EntityFactory.createResponse(user);
+    }
+
 
     @RequestMapping("/list/{pageNumber}/{pageSize}")
     public ResponseEntity getList(@PathVariable("pageNumber") int pageNumber
@@ -36,7 +46,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity add(User user) {
+    public ResponseEntity add(@RequestBody User user) {
         return EntityFactory.createResponse(userService.insert(user));
 
     }
@@ -44,10 +54,11 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public ResponseEntity update(User user) {
-        User user1 = new Student(99,"admin","admin","测试","13197670831",true,STUDENT,new Date(),"钦州","毕业","研发部");
+        User user1 = new Student(99, "admin", "admin", "测试", "13197670831", true, STUDENT, new Date(), "钦州", "毕业", "研发部");
         return EntityFactory.createResponse(userService.update(user1));
 
     }
+
 
     @RequestMapping()
     public ModelAndView page() {

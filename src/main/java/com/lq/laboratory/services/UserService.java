@@ -11,4 +11,6 @@ public interface UserService extends IService<User> {
     //分组
     Map<Integer, List<User>> getGroupUser();
 
+    User getUserByUserNameAndPassword(String userName, String password);
+
 }

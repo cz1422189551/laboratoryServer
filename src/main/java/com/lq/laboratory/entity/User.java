@@ -14,22 +14,29 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public  class User {
+public class User extends BaseEntity {
+
+    protected String name;
 
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+    public User(int id, String name, String userName, String password, String tel, boolean gender, int userType, Date createTime) {
+        super(id);
+        this.userName = userName;
+        this.password = password;
+        this.tel = tel;
+        this.gender = gender;
+        this.userType = userType;
+        this.createTime = createTime;
+    }
 
     protected String userName;
 
     protected String password;
 
-    protected String name;
 
     protected String tel;
 

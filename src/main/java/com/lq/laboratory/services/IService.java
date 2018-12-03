@@ -21,15 +21,10 @@ public interface IService<T> {
     //查询所有记录
     List<T> getAll();
 
-    //自定义查询条件
-    Result<T> getCustom(String sql);
-
-    //自定义查询条件，返回一个结果
-    T getCustomOne(String sql);
 
     T insert(T t);
 
-    T update(T t);
+    int update(T t);
 
     boolean delete(String id);
 

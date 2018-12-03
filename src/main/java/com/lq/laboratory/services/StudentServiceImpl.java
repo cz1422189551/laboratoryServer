@@ -38,15 +38,7 @@ public class StudentServiceImpl implements IService<Student> {
         return all;
     }
 
-    @Override
-    public Result<Student> getCustom(String sql) {
-        return null;
-    }
 
-    @Override
-    public Student getCustomOne(String sql) {
-        return null;
-    }
 
     @Override
     public Student insert(Student student) {
@@ -55,8 +47,9 @@ public class StudentServiceImpl implements IService<Student> {
     }
 
     @Override
-    public Student update(Student student) {
-        return studentRepository.saveAndFlush(student);
+    public int update(Student student) {
+//        return studentRepository.saveAndFlush(student);
+        return 0;
     }
 
     @Override

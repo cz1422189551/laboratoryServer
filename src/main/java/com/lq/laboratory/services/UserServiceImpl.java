@@ -36,15 +36,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public Result<User> getCustom(String sql) {
-        return null;
-    }
-
-    @Override
-    public User getCustomOne(String sql) {
-        return null;
-    }
 
     @Override
     public User insert(User user) {
@@ -57,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user) {
+    public int update(User user) {
         if (user == null || user.getId() == 0) throw new RuntimeException("更新对象为null");
 
         return user.getUserType() == STUDENT
@@ -94,5 +85,10 @@ public class UserServiceImpl implements UserService {
     public Result<User> getList(int pageNumber, int pageSize) {
         Page<User> page = userRepository.findAll(EntityFactory.createPagable(pageNumber, pageSize));
         return EntityFactory.createResult(page);
+    }
+
+    @Override
+    public User getUserByUserNameAndPassword(String userName, String password) {
+        return userRepository.findUserByUserNameAndPassword(userName,password);
     }
 }

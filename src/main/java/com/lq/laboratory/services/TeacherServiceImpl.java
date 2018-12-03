@@ -33,15 +33,7 @@ public class TeacherServiceImpl implements IService<Teacher> {
         return teacherRepository.findAll();
     }
 
-    @Override
-    public Result<Teacher> getCustom(String sql) {
-        return null;
-    }
 
-    @Override
-    public Teacher getCustomOne(String sql) {
-        return null;
-    }
 
     @Override
     public Teacher insert(Teacher teacher) {
@@ -49,9 +41,11 @@ public class TeacherServiceImpl implements IService<Teacher> {
     }
 
     @Override
-    public Teacher update(Teacher teacher) {
-        return null;
+    public int update(Teacher teacher) {
+//        return null;
+        return 0;
     }
+
 
     @Override
     public boolean delete(String id) {
