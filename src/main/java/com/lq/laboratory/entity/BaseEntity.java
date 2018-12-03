@@ -19,5 +19,4 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
 
-
 }
