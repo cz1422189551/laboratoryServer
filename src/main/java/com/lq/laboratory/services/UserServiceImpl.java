@@ -4,8 +4,6 @@ import com.lq.laboratory.entity.Result;
 import com.lq.laboratory.entity.Student;
 import com.lq.laboratory.entity.Teacher;
 import com.lq.laboratory.entity.User;
-import com.lq.laboratory.repository.StudentRepository;
-import com.lq.laboratory.repository.TeacherRepository;
 import com.lq.laboratory.repository.UserRepository;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import static com.lq.laboratory.services.Const.STUDENT;
+import static com.lq.laboratory.util.Const.STUDENT;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -83,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result<User> getList(int pageNumber, int pageSize) {
-        Page<User> page = userRepository.findAll(EntityFactory.createPagable(pageNumber, pageSize));
+        Page<User> page = userRepository.findAll(EntityFactory.createPageable(pageNumber, pageSize));
         return EntityFactory.createResult(page);
     }
 

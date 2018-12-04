@@ -1,6 +1,8 @@
 package com.lq.laboratory.services;
 
 import com.lq.laboratory.entity.Result;
+import com.lq.laboratory.util.EntityFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -30,7 +32,7 @@ public interface IService<T> {
 
     boolean delete(String id);
 
-    default List<T> getList(Specification<T> specification, int pageNumber, int pageSize) {
+    default Page<T> getList( Specification<T> specification, int pageNumber, int pageSize) {
         return null;
     }
 

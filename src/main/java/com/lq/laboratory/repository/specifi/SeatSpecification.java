@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.criteria.*;
 
-public class SeatSpecificationExecutor {
+public class SeatSpecification {
 
     /**
      *  查询 小于 第x排y列的座位

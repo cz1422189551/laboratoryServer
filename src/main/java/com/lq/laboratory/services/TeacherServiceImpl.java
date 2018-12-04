@@ -2,58 +2,30 @@ package com.lq.laboratory.services;
 
 import com.lq.laboratory.entity.Result;
 import com.lq.laboratory.entity.Teacher;
+import com.lq.laboratory.repository.BaseRepository;
 import com.lq.laboratory.repository.TeacherRepository;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.parser.Entity;
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class TeacherServiceImpl implements IService<Teacher> {
+public class TeacherServiceImpl extends  BaseServiceImpl<Teacher> {
 
-    @Autowired
-    TeacherRepository teacherRepository;
 
+    @Resource(name="teacherRepository")
     @Override
-    public Teacher getOne(String id) {
-        return teacherRepository.findById(Integer.valueOf(id)).orElse(null);
+    public void setRepository(BaseRepository<Teacher, Integer> repository) {
+        super.setRepository(repository);
     }
 
-    @Override
-    public Result<Teacher> getList(int pageNumber, int pageSize) {
-        Page<Teacher> page = teacherRepository.findAll(EntityFactory.createPagable(pageNumber, pageSize));
-        return EntityFactory.createResult(page);
-    }
-
-    @Override
-    public List<Teacher> getAll() {
-        return teacherRepository.findAll();
-    }
-
-
-
-    @Override
-    public Teacher insert(Teacher teacher) {
-        return teacherRepository.save(teacher);
-    }
-
+    @Transactional
     @Override
     public int update(Teacher teacher) {
-//        return null;
         return 0;
-    }
-
-
-    @Override
-    public boolean delete(String id) {
-        return false;
-    }
-
-    @Override
-    public boolean clear() {
-        return false;
     }
 }

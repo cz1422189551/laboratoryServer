@@ -3,8 +3,10 @@ package com.lq.laboratory.controller;
 import com.lq.laboratory.entity.ResponseEntity;
 import com.lq.laboratory.entity.Seat;
 import com.lq.laboratory.services.SeatServiceImpl;
+
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +19,11 @@ public class SeatController {
     @RequestMapping(value = "/add")
     public ResponseEntity add(Seat seat) {
         return EntityFactory.createResponse(seatService.insert(seat));
+    }
+
+    @RequestMapping(value = "/one/{id}")
+    public ResponseEntity getOne(@PathVariable("id") String id) {
+        Seat one = seatService.getOne(id);
+        return EntityFactory.createResponse(one) ;
     }
 }

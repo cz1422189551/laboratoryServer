@@ -17,7 +17,9 @@ public class EntityFactory {
 
     public static final int SUCCESS = 200;
 
-    public static final int INSERT_ERROR = 300;
+    public static final int SQL_ERROR = 300;
+
+    public static final int DB_ERROR =400;
 
     public static final int RUNTIME_ERROR = 500;
 
@@ -27,7 +29,7 @@ public class EntityFactory {
     }
 
     public static ResponseEntity createErrorResponse(int code, Exception e) {
-        return createErrorResponse(code, e.getMessage());
+        return createErrorResponse(code, e.getClass().getSimpleName() + ":" + e.getMessage());
     }
 
     //创建错误的响应实体
@@ -62,7 +64,7 @@ public class EntityFactory {
         return new Result<>(t);
     }
 
-    public static Pageable createPagable(int pageNumber, int pageSize) {
+    public static Pageable createPageable(int pageNumber, int pageSize) {
         return PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
 
     }

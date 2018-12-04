@@ -7,10 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
-
-import static com.lq.laboratory.services.Const.STUDENT;
-
 @RestController()
 @RequestMapping("/announcement")
 public class AnnouncementController {
@@ -50,8 +46,14 @@ public class AnnouncementController {
 
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.POST )
+    public ResponseEntity update(@RequestParam("id") String id) {
+        return EntityFactory.createResponse(service.delete(id));
+
+    }
+
     @RequestMapping()
     public ModelAndView page() {
-        return new ModelAndView("user");
+        return new ModelAndView("announcement");
     }
 }

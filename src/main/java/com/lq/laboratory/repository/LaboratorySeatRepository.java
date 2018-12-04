@@ -1,10 +1,11 @@
 package com.lq.laboratory.repository;
 
 import com.lq.laboratory.entity.Laboratory;
-import com.lq.laboratory.entity.Seat;
+import com.lq.laboratory.entity.LaboratorySeat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface LaboratoryRepository extends BaseRepository<Laboratory, Integer> {
+public interface LaboratorySeatRepository extends JpaRepository<Laboratory, Integer>, JpaSpecificationExecutor<LaboratorySeat> {
+
 
 }

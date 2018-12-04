@@ -1,4 +1,4 @@
-package com.lq.laboratory.services;
+package com.lq.laboratory.util;
 
 public class Const {
     public static final int STUDENT = 1;

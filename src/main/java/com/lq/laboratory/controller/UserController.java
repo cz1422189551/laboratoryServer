@@ -1,18 +1,15 @@
 package com.lq.laboratory.controller;
 
 import com.lq.laboratory.entity.*;
-import com.lq.laboratory.services.IService;
 import com.lq.laboratory.services.UserService;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 
-import static com.lq.laboratory.services.Const.STUDENT;
-import static com.lq.laboratory.services.Const.TEACHER;
+import static com.lq.laboratory.util.Const.STUDENT;
 
 @RestController()
 @RequestMapping("/user")
@@ -45,10 +42,10 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ResponseEntity add( User user) {
-        User u = new Student(1, "admin", "admin", "狮子吃咸鱼", "18807772672", true, STUDENT, new Date(), "广州", "计科本", "电信学院");
-        return EntityFactory.createResponse(userService.insert(u));
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity add(@RequestBody User user) {
+//        User u = new Student(1, "admin", "admin", "狮子吃咸鱼", "18807772672", true, STUDENT, new Date(), "广州", "计科本", "电信学院");
+        return EntityFactory.createResponse(userService.insert(user));
 
     }
 
