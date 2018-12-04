@@ -2,15 +2,10 @@ package com.lq.laboratory.services;
 
 import com.lq.laboratory.entity.Seat;
 import com.lq.laboratory.repository.BaseRepository;
-import com.lq.laboratory.repository.SeatRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.lq.laboratory.services.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;

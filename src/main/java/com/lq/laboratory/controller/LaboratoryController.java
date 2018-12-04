@@ -9,12 +9,14 @@ import com.lq.laboratory.services.SeatServiceImpl;
 import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/laboratory")
@@ -49,16 +51,44 @@ public class LaboratoryController {
         return EntityFactory.createResponse(laboratoryService.insert(laboratory));
     }
 
+    //更新实验室信息
+    @RequestMapping(value = "/update")
+    public ResponseEntity updateInfo(Laboratory laboratory) {
 
-    @RequestMapping(value = "/seat/update",method = RequestMethod.POST)
+        laboratory.setUser(userService.getOne(1 + ""));
+        laboratory.setCloseDate(new Date());
+        laboratory.setOpenDate(new Date());
+        laboratory.setRow(2);
+        laboratory.setCol(2);
+        laboratory.setEnable(true);
+        laboratory.setId(1);
+        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(laboratory.getRow(), laboratory.getCol()));
+
+        laboratory.setSeatList(seatList);
+
+        return EntityFactory.createResponse(laboratoryService.update(laboratory));
+    }
+
+
+    @RequestMapping(value = "/seat/update", method = RequestMethod.POST)
     public ResponseEntity update(Laboratory laboratory) {
 
-        Laboratory one = laboratoryService.getOne(2 + "");
-        List<LaboratorySeat> all = laboratorySeatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(one.getId()));
-        System.out.println("");
+//        Laboratory one = laboratoryService.getOne(1 + "");
+        List<LaboratorySeat> all = laboratorySeatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(laboratory.getId()));
+
         return null;
 //        return EntityFactory.createResponse(laboratoryService.insert(laboratory));
     }
 
+    //查看一个实验室包含座位的信息
+    @RequestMapping(value = "/seat/one/{id}", method = RequestMethod.GET)
+    public ResponseEntity update(@PathVariable("id") String id) {
+
+        List<LaboratorySeat> list = laboratorySeatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(Integer.valueOf(id)));
+
+        System.out.println("");
+        return null;
+
+    }
 
 }

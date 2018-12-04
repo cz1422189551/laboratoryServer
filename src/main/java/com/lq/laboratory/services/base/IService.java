@@ -1,4 +1,4 @@
-package com.lq.laboratory.services;
+package com.lq.laboratory.services.base;
 
 import com.lq.laboratory.entity.Result;
 import com.lq.laboratory.util.EntityFactory;

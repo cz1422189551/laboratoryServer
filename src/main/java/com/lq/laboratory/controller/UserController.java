@@ -1,7 +1,7 @@
 package com.lq.laboratory.controller;
 
 import com.lq.laboratory.entity.*;
-import com.lq.laboratory.services.UserService;
+import com.lq.laboratory.services.base.UserService;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

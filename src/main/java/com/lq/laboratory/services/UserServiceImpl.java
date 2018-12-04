@@ -4,19 +4,23 @@ import com.lq.laboratory.entity.Result;
 import com.lq.laboratory.entity.Student;
 import com.lq.laboratory.entity.Teacher;
 import com.lq.laboratory.entity.User;
+import com.lq.laboratory.repository.BaseRepository;
 import com.lq.laboratory.repository.UserRepository;
+import com.lq.laboratory.services.base.UserService;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 import static com.lq.laboratory.util.Const.STUDENT;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends UserService {
 
 
     @Autowired
@@ -25,16 +29,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     TeacherServiceImpl teacherService;
 
-    @Autowired
     UserRepository userRepository;
 
-
+    @Resource(name = "userRepository")
     @Override
-    public List<User> getAll() {
-        return null;
+    public void setRepository(BaseRepository<User, Integer> repository) {
+        super.setRepository(repository);
+        userRepository = (UserRepository) repository;
     }
 
-
+    @Transactional
     @Override
     public User insert(User user) {
 
@@ -45,6 +49,7 @@ public class UserServiceImpl implements UserService {
                 : teacherService.insert((Teacher) user);
     }
 
+    @Transactional
     @Override
     public int update(User user) {
         if (user == null || user.getId() == 0) throw new RuntimeException("更新对象为null");
@@ -54,6 +59,7 @@ public class UserServiceImpl implements UserService {
                 : teacherService.update((Teacher) user);
     }
 
+    @Transactional
     @Override
     public boolean delete(String id) {
         return false;
@@ -87,6 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUserNameAndPassword(String userName, String password) {
-        return userRepository.findUserByUserNameAndPassword(userName,password);
+
+        return userRepository.findUserByUserNameAndPassword(userName, password);
     }
 }

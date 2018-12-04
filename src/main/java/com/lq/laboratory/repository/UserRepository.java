@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.QueryHints;
 
 import javax.persistence.QueryHint;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends BaseRepository<User, Integer> {
 
     User findUserByUserNameAndPassword(@Param("username") String userName, @Param("password") String password);
-
 
 }

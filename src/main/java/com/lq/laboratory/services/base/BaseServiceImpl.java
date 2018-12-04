@@ -1,4 +1,4 @@
-package com.lq.laboratory.services;
+package com.lq.laboratory.services.base;
 
 import com.lq.laboratory.entity.BaseEntity;
 import com.lq.laboratory.entity.Result;
@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -45,9 +44,14 @@ public abstract class BaseServiceImpl<T> implements IService<T> {
         return repository.save(t);
     }
 
-
+    @Transactional
     @Override
-    public abstract int update(T t);
+    public int update(T t) {
+        BaseEntity entity = (BaseEntity) t;
+        T one = getOne(entity.getId() + "");
+        if (one == null) return 0;
+        return repository.saveAndFlush(t) == null ? 0 : 1;
+    }
 
     @Transactional
     @Override

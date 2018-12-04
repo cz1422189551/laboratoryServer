@@ -10,8 +10,4 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface BaseRepository<T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
 
-//    @Modifying
-//    @Query
-//    int update(String... params);
-
 }
