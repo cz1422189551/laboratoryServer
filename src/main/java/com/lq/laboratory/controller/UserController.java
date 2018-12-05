@@ -34,10 +34,16 @@ public class UserController {
 
 
     @RequestMapping("/list/{pageNumber}/{pageSize}")
-    public ResponseEntity getList(@PathVariable("pageNumber") int pageNumber
+    public ResponseEntity list(@PathVariable("pageNumber") int pageNumber
             , @PathVariable("pageSize") int pageSize) {
 
         Result<User> list = userService.getList(pageNumber, pageSize);
+        return EntityFactory.createResponse(list);
+    }
+
+    @RequestMapping("/getList")
+    public ResponseEntity getList(int pageNum, int pageSize) {
+        Result<User> list = userService.getList(pageNum, pageSize);
         return EntityFactory.createResponse(list);
     }
 
@@ -61,5 +67,10 @@ public class UserController {
     @RequestMapping()
     public ModelAndView page() {
         return new ModelAndView("user");
+    }
+
+    @RequestMapping("/add/page")
+    public ModelAndView addPage() {
+        return new ModelAndView("add_user");
     }
 }

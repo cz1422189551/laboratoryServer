@@ -65,7 +65,7 @@ public class EntityFactory {
     }
 
     public static Pageable createPageable(int pageNumber, int pageSize) {
-        return PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "id");
+        return PageRequest.of(pageNumber-1, pageSize, Sort.Direction.DESC, "id");
 
     }
 
