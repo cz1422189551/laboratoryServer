@@ -19,7 +19,7 @@ public class EntityFactory {
 
     public static final int SQL_ERROR = 300;
 
-    public static final int DB_ERROR =400;
+    public static final int DB_ERROR = 400;
 
     public static final int RUNTIME_ERROR = 500;
 
@@ -47,7 +47,7 @@ public class EntityFactory {
         //总记录数量
         long totalElements = page.getTotalElements();
         //当前页
-        int pageNumber = page.getNumber();
+        int pageNumber = page.getNumber() + 1;
         //总页数
         int totalPages = page.getTotalPages();
         //当前页的记录数
@@ -65,7 +65,7 @@ public class EntityFactory {
     }
 
     public static Pageable createPageable(int pageNumber, int pageSize) {
-        return PageRequest.of(pageNumber-1, pageSize, Sort.Direction.DESC, "id");
+        return PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.DESC, "id");
 
     }
 

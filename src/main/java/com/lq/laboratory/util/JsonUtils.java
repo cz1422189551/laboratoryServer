@@ -25,6 +25,10 @@ public class JsonUtils {
         return fromJson(json, targetClazz, new Class[]{GenericClazz});
     }
 
+    public static Object fromJson(String json,Class clazz) {
+        return fromJson(json, clazz);
+    }
+
     public static Object fromJson(String json, Class<ResponseEntity> targetClazz, Class[] genericClazz) {
 
         ParameterizedTypeImpl subType = null;

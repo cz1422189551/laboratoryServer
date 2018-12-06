@@ -136,18 +136,5 @@ layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig'], function(){
     }
 	});
 
-	//捐赠
-	$("#donate").on("click",function(){
 
-		layer.open({
-		  type: 1,
-		  area: ['471px', '333px'],
-		  shade: true,
-		  shadeClose: true,
-		  shade: 0.6,
-		  title: false, //不显示标题
-		  content: "<div><img width='471' height='333'   src='./images/zhifu.png'></div>"
-		});
-
-	});
 });

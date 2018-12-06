@@ -31,84 +31,89 @@
 						<form class="layui-form" groupId="test">
 							<input type="hidden" name="id">
 						  <div class="layui-form-item">
-						    <label class="layui-form-label">功能号：</label>
+						    <label class="layui-form-label">用户名</label>
 						    <div class="layui-input-inline">
-						      <input type="text" name="funcNo" required=""  lay-verify="required" placeholder="请输入功能号" autocomplete="off" class="layui-input fsEditReadonly"/>
+						      <input type="text" name="userName" required=""  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input fsEditReadonly"/>
 						    </div>
-						    <label class="layui-form-label">名称：</label>
+						    <label class="layui-form-label">密码</label>
 						    <div class="layui-input-inline">
-						      <input type="text" name="funcName" required=""  lay-verify="required" placeholder="请输入功能号名称" autocomplete="off" class="layui-input"/>
+						      <input type="text" name="password" required=""  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input"/>
 						    </div>
 						  </div>
 						  <div class="layui-form-item">
 						    <label class="layui-form-label">类型</label>
 						    <div class="layui-input-inline">
-						      <select name="funcType" lay-verify="required">
+						      <select name="userType" lay-verify="required">
 						        <option value="">--请选择--</option>
-						        <option value="c">功能号实现类</option>
-						        <option value="s">service实现类</option>
-						        <option value="m">mapper实现类</option>
+						        <option value="1">学生</option>
+						        <option value="2">教师</option>
+						        <option value="3">管理人员</option>
 						      </select>
 						    </div>
-						    <label class="layui-form-label">分类</label>
-						    <div class="layui-input-inline">
-						      <select name="type" lay-verify="required">
-						        <option value="">--请选择--</option>
-						        <option value="plat">后台系统</option>
-						      </select>
-						    </div>
+						    <!--<label class="layui-form-label">分类</label>-->
+						    <!--<div class="layui-input-inline">-->
+						      <!--<select name="type" lay-verify="required">-->
+						        <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+						        <!--<option value="plat">后台系统</option>-->
+						      <!--</select>-->
+						    <!--</div>-->
 						  </div>
 						  <div class="layui-form-item">
-						    <label class="layui-form-label">资源内容：</label>
-						    <div class="layui-input-block">
-						      <input type="text" name="resource" required="" lay-verify="required" placeholder="请输入资源内容" autocomplete="off" class="layui-input"/>
+						    <label class="layui-form-label">电话</label>
+						    <div class="layui-input-inline">
+						      <input type="text" name="tel" required="" lay-verify="required" placeholder="请输入电话" class="layui-input"/>
 						    </div>
+
+							  <label class="layui-form-label">创建时间</label>
+							  <div class="layui-input-inline">
+								  <input type="text" name="createTime" required="" lay-verify="required" placeholder="创建时间" class="layui-input fsEditReadonly"/>
+							  </div>
 						  </div>
 						  <div class="layui-form-item">
 						  	<label class="layui-form-label">版本号：</label>
 						    <div class="layui-input-inline">
 						      <input type="text" name="version" placeholder="默认1.0" autocomplete="off" class="layui-input"/>
 						    </div>
-						    <label class="layui-form-label">状态</label>
+						    <label class="layui-form-label">性别</label>
 						    <div class="layui-input-inline">
-						      <input type="checkbox" name="state" lay-skin="switch" lay-text="启用|关闭" checked="" value="1"/>
+								<input type="checkbox" name="gender" lay-skin="switch" lay-text="男|女" checked="" value="1" />
 						    </div>
 						  </div>
 						  <hr/>
 					</form>
 				</div>
 			</div>
-			<div class="layui-col-md12">
-				<div class="layui-row grid-demo">
-					<div class="layui-col-md3">
-						<button class="layui-btn layui-btn layui-btn-sm" function="addRow" tableId="addFsDatagrid">
-							<i class="layui-icon">&#xe654;</i>新增
-						</button>
-					</div>
-					<div class="layui-col-md12">
-						<table id="addFsDatagrid" lay-filter="addFsDatagrid" class="fsDatagrid" groupId="test" url="/fsbus/DEMO1014"
-							isLoad="0" isPage="0" height="160" inputs="funcId:$id"></table>
+			<!--<div class="layui-col-md12">-->
+				<!--<div class="layui-row grid-demo">-->
+					<!--<div class="layui-col-md3">-->
+						<!--<button class="layui-btn layui-btn layui-btn-sm" function="addRow" tableId="addFsDatagrid">-->
+							<!--<i class="layui-icon">&#xe654;</i>新增-->
+						<!--</button>-->
+					<!--</div>-->
+					<!--<div class="layui-col-md12">-->
+						<!--<table id="addFsDatagrid" lay-filter="addFsDatagrid" class="fsDatagrid" groupId="test" url="/fsbus/DEMO1014"-->
+							<!--isLoad="0" isPage="0" height="160" inputs="funcId:$id"></table>-->
 
-						<div class="fsDatagridCols">
-							<p type="numbers" title="#" />
-							<p field="attribute" edit="text" title="参数" width="150"/>
-						    <p field="name" edit="text" title="名称" width="200"/>
-						    <p field="value" edit="text" title="值" width="130"/>
-						    <p field="defaultValue" edit="text" title="默认值" width="130"/>
-							<p fixed="right" align="center" toolbar="#barDemo" title="操作" width="100" />
-						</div>
-						<script type="text/html" id="barDemo">
-  							<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delRow" isConfirm="1" confirmMsg="是否确定删除当前记录？">删除</a>
-						</script>
-					</div>
-				</div>
+						<!--<div class="fsDatagridCols">-->
+							<!--<p type="numbers" title="#" />-->
+							<!--<p field="attribute" edit="text" title="参数" width="150"/>-->
+						    <!--<p field="name" edit="text" title="名称" width="200"/>-->
+						    <!--<p field="value" edit="text" title="值" width="130"/>-->
+						    <!--<p field="defaultValue" edit="text" title="默认值" width="130"/>-->
+							<!--<p fixed="right" align="center" toolbar="#barDemo" title="操作" width="100" />-->
+						<!--</div>-->
+						<!--<script type="text/html" id="barDemo">-->
+  							<!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delRow" isConfirm="1" confirmMsg="是否确定删除当前记录？">删除</a>-->
+						<!--</script>-->
+					<!--</div>-->
+				<!--</div>-->
 
-			</div>
+			<!--</div>-->
 
 			<div class="layui-col-md12">
 				 <div style="text-align: center;">
-			     	 <button class="layui-btn fsAdd" function="save" groupId="test" url="/fsbus/DEMO1008"><i class="layui-icon">&#xe609;</i>新增</button>
-			     	 <button class="layui-btn fsEdit" function="save" groupId="test" url="/fsbus/DEMO1009"><i class="layui-icon">&#xe609;</i>修改</button>
+			     	 <button class="layui-btn fsAdd" function="save" groupId="test" url="/user/add"><i class="layui-icon">&#xe609;</i>新增</button>
+			     	 <button class="layui-btn " function="save" groupId="test" url="/user/update"><i class="layui-icon">&#xe609;</i>修改</button>
 			     	 <button type="button" class="layui-btn layui-btn-primary" function="close">关闭</button>
 			   	  </div>
 			</div>

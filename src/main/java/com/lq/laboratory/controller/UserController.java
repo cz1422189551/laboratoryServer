@@ -1,12 +1,16 @@
 package com.lq.laboratory.controller;
 
+import com.google.gson.Gson;
 import com.lq.laboratory.entity.*;
 import com.lq.laboratory.services.base.UserService;
 import com.lq.laboratory.util.EntityFactory;
+import com.lq.laboratory.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 
 import static com.lq.laboratory.util.Const.STUDENT;
@@ -50,16 +54,22 @@ public class UserController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity add(@RequestBody User user) {
-//        User u = new Student(1, "admin", "admin", "狮子吃咸鱼", "18807772672", true, STUDENT, new Date(), "广州", "计科本", "电信学院");
+
+        for (int i = 0; i < 50; i++) {
+            User u = new Student(i + 1, "admin" + (i + 1), "admin" + (i + 1), "狮子吃咸鱼" + i, "18807772672", true, STUDENT, new Date(), "广州", "计科本", "电信学院");
+            EntityFactory.createResponse(userService.insert(u));
+        }
         return EntityFactory.createResponse(userService.insert(user));
 
     }
 
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public ResponseEntity update(User user) {
-        User user1 = new Student(99, "admin", "admin", "测试", "13197670831", true, STUDENT, new Date(), "钦州", "毕业", "研发部");
-        return EntityFactory.createResponse(userService.update(user1));
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity update(String fsFormData ) throws UnsupportedEncodingException {
+        String tmp = URLDecoder.decode(fsFormData, "UTF-8");
+        User u = (User) JsonUtils.fromJson(tmp, User.class);
+//        User user1 = new Student(99, "admin", "admin", "测试", "13197670831", true, STUDENT, new Date(), "钦州", "毕业", "研发部");
+        return EntityFactory.createResponse(userService.update(u));
 
     }
 
