@@ -26,7 +26,7 @@ public class JsonUtils {
     }
 
     public static Object fromJson(String json,Class clazz) {
-        return fromJson(json, clazz);
+        return gson.fromJson(json, clazz);
     }
 
     public static Object fromJson(String json, Class<ResponseEntity> targetClazz, Class[] genericClazz) {

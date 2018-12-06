@@ -31,13 +31,13 @@ layui.fsDict = {
 		}
 		,
 		//性别
-		sex : {
+		gender : {
 			formatType : "local",
 			labelField : "name",
 			valueField : "code",
 			spaceMode : "",//展示多个数据分隔符，默认,
-			data:[{"code":"男","name":"男"},
-				{"code":"女","name":"女"}]
+			data:[{"code":"1","name":"男"},
+				{"code":"0","name":"女"}]
 		}
 		,
 		//省份

@@ -56,7 +56,7 @@ public class UserController {
     public ResponseEntity add(@RequestBody User user) {
 
         for (int i = 0; i < 50; i++) {
-            User u = new Student(i + 1, "admin" + (i + 1), "admin" + (i + 1), "狮子吃咸鱼" + i, "18807772672", true, STUDENT, new Date(), "广州", "计科本", "电信学院");
+            User u = new Student(i + 1, "admin" + (i + 1), "admin" + (i + 1), "狮子吃咸鱼" + i, "18807772672", 1%2, STUDENT, new Date(), "广州", "计科本", "电信学院");
             EntityFactory.createResponse(userService.insert(u));
         }
         return EntityFactory.createResponse(userService.insert(user));
@@ -66,8 +66,8 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity update(String fsFormData ) throws UnsupportedEncodingException {
-        String tmp = URLDecoder.decode(fsFormData, "UTF-8");
-        User u = (User) JsonUtils.fromJson(tmp, User.class);
+//        String tmp = URLDecoder.decode(fsFormData, "UTF-8");
+        User u = (User) JsonUtils.fromJson(fsFormData, User.class);
 //        User user1 = new Student(99, "admin", "admin", "测试", "13197670831", true, STUDENT, new Date(), "钦州", "毕业", "研发部");
         return EntityFactory.createResponse(userService.update(u));
 

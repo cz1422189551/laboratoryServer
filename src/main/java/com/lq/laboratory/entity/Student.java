@@ -24,7 +24,7 @@ public class Student extends User {
 
 
 
-    public Student(int id, String userName, String password, String nickName, String tel, boolean gender, int userType, Date createTime, String address, String classGrade, String department) {
+    public Student(int id, String userName, String password, String nickName, String tel, int gender, int userType, Date createTime, String address, String classGrade, String department) {
         super(id, userName, password, nickName, tel, gender, userType, createTime);
         this.address = address;
         this.classGrade = classGrade;

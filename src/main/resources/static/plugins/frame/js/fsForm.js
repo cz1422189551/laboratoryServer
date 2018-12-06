@@ -409,7 +409,9 @@ layui.define(['layer',"fsCommon","form",'laydate',"fsConfig",'layedit'], functio
 		$(list).each(function(i,v){
 			var checkbox="<input type=\"checkbox\" name=\""+name+"\" lay-skin=\""+laySkin+"\" title=\""+v[labelField]+"\" value=\""+v[valueField]+"\">";
 			_this.parent().append(checkbox);
+            console.log(checkbox)
 		});
+
     _this.next().remove();
     _this.remove();
     form.render("checkbox"); //更新全部

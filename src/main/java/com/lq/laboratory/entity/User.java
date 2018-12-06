@@ -23,7 +23,7 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public User(int id, String name, String userName, String password, String tel, boolean gender, int userType, Date createTime) {
+    public User(int id, String name, String userName, String password, String tel, int gender, int userType, Date createTime) {
         super(id);
         this.userName = userName;
         this.password = password;
@@ -40,7 +40,7 @@ public class User extends BaseEntity {
 
     protected String tel;
 
-    protected boolean gender;
+    protected int gender;
 
     //用户类别（学生，或教师）
     protected int userType;
