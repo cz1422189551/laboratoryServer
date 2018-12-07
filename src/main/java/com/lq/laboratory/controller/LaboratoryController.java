@@ -1,21 +1,23 @@
 package com.lq.laboratory.controller;
 
 import com.lq.laboratory.entity.*;
+import com.lq.laboratory.repository.specifi.BaseSpecification;
 import com.lq.laboratory.repository.specifi.LaboratorySeatSpecification;
 import com.lq.laboratory.repository.specifi.SeatSpecification;
+import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.LaboratorySeatServiceImpl;
 import com.lq.laboratory.services.LaboratoryServiceImpl;
 import com.lq.laboratory.services.SeatServiceImpl;
 import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.util.EntityFactory;
+import com.lq.laboratory.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -88,7 +90,16 @@ public class LaboratoryController {
 
         System.out.println("");
         return null;
+    }
 
+    //查看一个实验室包含座位的信息
+    @RequestMapping(value = "/getList")
+    public ResponseEntity update(@RequestParam Map<String, String> map) {
+
+        int pageNum = FormatUtil.getPageAfterRemove(map, "pageNum");
+        int pageSize = FormatUtil.getPageAfterRemove(map, "pageSize");
+        Page page = laboratoryService.getList(BaseSpecification.<Laboratory>findByAnd(map), pageNum, pageSize);
+        return EntityFactory.createResponse(EntityFactory.createResult(page));
     }
 
 }

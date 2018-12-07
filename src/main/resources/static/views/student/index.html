@@ -63,11 +63,11 @@
         <div class="layui-col-md12">
             <div class="layui-row grid-demo">
                 <div class="layui-col-md3">
-                    <button class="layui-btn" function="top" topUrl="views/staticDatagrid/add.html" topMode="add"
+                    <button class="layui-btn" function="top" topUrl="views/student/add.html" topMode="add"
                             topWidth="800px" topHeight="580px" topTitle="新增功能号信息">
                         <i class="layui-icon">&#xe654;</i>新增
                     </button>
-                    <button class="layui-btn" function="top" topUrl="views/staticDatagrid/add.html" topMode="edit"
+                    <button class="layui-btn" function="top" topUrl="views/student/add.html" topMode="edit"
                             topWidth="800px" topHeight="580px" isSelect="1" topTitle="编辑功能号信息" inputs="id:">
                         <i class="layui-icon">&#xe642;</i>编辑
                     </button>
@@ -76,7 +76,7 @@
                     </button>
                 </div>
                 <div class="layui-col-md12">
-                    <table id="fsDatagrid" lay-filter="fsDatagrid" class="fsDatagrid" url="/user/getList"
+                    <table id="fsDatagrid" lay-filter="fsDatagrid" class="fsDatagrid" url="/student/getList"
 
                            groupId="test" isPage="1" defaultForm="query_form" height="full-135"></table>
 
@@ -85,10 +85,11 @@
                         <p checkbox="true" rowspan="2"/>
                         <p field="userName" align="center" title="用户名" rowspan="2"/>
                         <p field="password" align="center" title="用户密码" rowspan="2"/>
-                        <p field="gender" title="性别"  templet="#stateTpl"   rowspan="2"/>
-                        <p field="createTime" title="创建时间" rowspan="2"/>
-                        <p field="tel" title="电话" sort="true"/>
-                        <p field="userType" title="用户角色"  templet="#typeTpl" />
+                        <p field="name" align="center" title="姓名" rowspan="2"/>
+                        <p field="gender" title="性别" templet="#stateTpl" rowspan="2"/>
+                        <p field="createTime" title="创建时间"  sort="true" rowspan="2"/>
+                        <p field="tel" title="电话" />
+                        <p field="userType" title="用户角色" templet="#typeTpl"/>
                         <p fixed="right" align="center" toolbar="#barDemo" title="操作" rowspan="2"/>
                     </div>
 
@@ -113,9 +114,8 @@
                     </script>
 
 
-
                     <script type="text/html" id="barDemo">
-                        <a class="layui-btn layui-btn-xs" lay-event="top" topUrl="views/staticDatagrid/add.html"
+                        <a class="layui-btn layui-btn-xs" lay-event="top" topUrl="views/student/update.html"
                            topMode="edit" topWidth="800px" topHeight="580px" isMaxWindow="" topTitle="编辑" inputs="id:">编辑</a>
                     </script>
                 </div>

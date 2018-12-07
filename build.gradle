@@ -28,7 +28,7 @@ dependencies {
 
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 //    implementation('org.springframework.boot:spring-boot-devtools')
-
+    compile 'com.github.wenhao:jpa-spec:3.2.3'
 //	implementation group: 'mysql', name: 'mysql-connector-java', version: '6.0.2'
     implementation 'org.apache.commons:commons-dbcp2:2.1.1'
     implementation 'org.apache.commons:commons-pool2:2.4.2'

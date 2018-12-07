@@ -45,6 +45,7 @@ public class User extends BaseEntity {
     //用户类别（学生，或教师）
     protected int userType;
 
+    @Temporal(TemporalType.TIMESTAMP)
     protected Date createTime;
 
 

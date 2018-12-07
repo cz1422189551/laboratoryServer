@@ -181,16 +181,6 @@ layui.define(["fsCommon", "table", 'laypage', 'fsConfig', 'form', 'fsButtonCommo
                 ,
                 dataName: isPage == "1" ? $.result(fsConfig, "global.page.response.dataNamePage", "results.data.list") : $.result(fsConfig, "global.page.response.dataName", "results.data") //数据列表的字段名称，默认：data
             }
-            // , parseData: function (res) { //res 即为原始返回的数据
-            //     console.log(res.data.result);
-            //     return {
-            //         "code": res.code, //解析接口状态
-            //         "msg": res.msg, //解析提示文本
-            //         "total": res.data.total, //解析数据长度
-            //         "data": res.data.result  //解析数据列表
-            //     };
-            // }
-
         });
 
         if (thisDatagrid.config.fsSortType == "1") {
@@ -198,6 +188,8 @@ layui.define(["fsCommon", "table", 'laypage', 'fsConfig', 'form', 'fsButtonCommo
                 thisDatagrid.config.getDatagrid(tableId).sort(obj);
             });
         }
+
+
 
     };
 
@@ -286,6 +278,7 @@ layui.define(["fsCommon", "table", 'laypage', 'fsConfig', 'form', 'fsButtonCommo
      */
     FsDatagrid.prototype.query = function (param) {
         if (!$.isEmpty(this.datagrid)) {
+            console.log('param' +param);
             this.datagrid.query(param);
         }
     };
@@ -306,6 +299,7 @@ layui.define(["fsCommon", "table", 'laypage', 'fsConfig', 'form', 'fsButtonCommo
     FsDatagrid.prototype.reload = function (param) {
         if (!$.isEmpty(this.datagrid)) {
             var options = {where: param};
+            console.log('options' +options)
             this.datagrid.reload(options);
         }
     };

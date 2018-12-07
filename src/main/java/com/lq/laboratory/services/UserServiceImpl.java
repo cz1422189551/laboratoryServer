@@ -42,11 +42,11 @@ public class UserServiceImpl extends UserService {
     @Override
     public User insert(User user) {
 
-        if (user == null || user.getId() == 0) throw new RuntimeException("插入对象为null");
-
-        return user.getUserType() == STUDENT
-                ? studentService.insert((Student) user)
-                : teacherService.insert((Teacher) user);
+        if (user == null) throw new RuntimeException("插入对象为null");
+        return userRepository.save(user);
+//        return user.getUserType() == STUDENT
+//                ? studentService.insert((Student) user)
+//                : teacherService.insert((Teacher) user);
     }
 
     @Transactional

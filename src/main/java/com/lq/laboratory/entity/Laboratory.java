@@ -17,6 +17,8 @@ public class Laboratory extends BaseEntity {
 
     private User user;
 
+    private String name;
+
     @ManyToMany
     @JoinTable(name = "laboratory_seat"
             , inverseJoinColumns = @JoinColumn(name = "seat_id")
@@ -51,6 +53,7 @@ public class Laboratory extends BaseEntity {
     public String toString() {
         return "Laboratory{" +
                 "user=" + user +
+                ",name=" + name +
                 ", row=" + row +
                 ", col=" + col +
                 ", enable=" + enable +
