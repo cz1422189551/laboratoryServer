@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -73,23 +74,24 @@ public class LaboratoryController {
 
 
     @RequestMapping(value = "/seat/update", method = RequestMethod.POST)
-    public ResponseEntity update(Laboratory laboratory) {
+    public Map update(Laboratory laboratory) {
 
-//        Laboratory one = laboratoryService.getOne(1 + "");
         List<LaboratorySeat> all = laboratorySeatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(laboratory.getId()));
 
-        return null;
+        Map<Laboratory, List<LaboratorySeat>> collect = new HashMap<>();
+//        all.stream().map(k -> k)
+        collect.put(all.get(0).getLaboratory(), null);
+        return collect;
 //        return EntityFactory.createResponse(laboratoryService.insert(laboratory));
     }
 
     //查看一个实验室包含座位的信息
     @RequestMapping(value = "/seat/one/{id}", method = RequestMethod.GET)
-    public ResponseEntity update(@PathVariable("id") String id) {
+    public List<LaboratorySeat> getLaboratorySeat(@PathVariable("id") String id) {
 
         List<LaboratorySeat> list = laboratorySeatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(Integer.valueOf(id)));
 
-        System.out.println("");
-        return null;
+        return list;
     }
 
     //查看一个实验室包含座位的信息

@@ -49,6 +49,7 @@ public class Laboratory extends BaseEntity {
     private Date closeDate;
 
 
+
     @Override
     public String toString() {
         return "Laboratory{" +

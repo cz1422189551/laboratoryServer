@@ -1,5 +1,6 @@
 package com.lq.laboratory.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class LaboratorySeat extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "laboratory_id")
+
     private Laboratory laboratory;
 
 

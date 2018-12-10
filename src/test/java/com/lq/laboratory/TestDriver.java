@@ -15,4 +15,11 @@ public class TestDriver {
         System.out.println();
     }
     
+    @Test
+    public void test(){
+        float num1 = 15.0f;
+        float num2 = 8.0f;
+        System.out.println(Math.round(num1/num2));
+    }
+    
 }
