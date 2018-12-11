@@ -1,5 +1,7 @@
 package com.lq.laboratory.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,12 +25,23 @@ public class Laboratory extends BaseEntity {
     @JoinTable(name = "laboratory_seat"
             , inverseJoinColumns = @JoinColumn(name = "seat_id")
             , joinColumns = @JoinColumn(name = "laboratory_id"))
-
     private List<Seat> seatList;
 
-//    private LaboratoryType type;
+    public Laboratory(int id, User user, String name, List<Seat> seatList, int row, int col, boolean enable, Date openDate, Date closeDate, LaboratoryType laboratoryType) {
+        super(id);
+        this.user = user;
+        this.name = name;
+        this.seatList = seatList;
+        this.row = row;
+        this.col = col;
+        this.enable = enable;
+        this.openDate = openDate;
+        this.closeDate = closeDate;
+        this.laboratoryType = laboratoryType;
+    }
 
-    //排
+
+//排
 
     private int row;
     //列
@@ -48,7 +61,10 @@ public class Laboratory extends BaseEntity {
 
     private Date closeDate;
 
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    @JsonIgnore
+    private LaboratoryType laboratoryType;
 
     @Override
     public String toString() {

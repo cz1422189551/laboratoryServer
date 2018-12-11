@@ -16,4 +16,7 @@ public class LaboratorySeatSpecification {
             return cb.equal(root.get("laboratory").get("id"), laboratoryId);
         };
     }
+
+
+
 }

@@ -26,7 +26,7 @@ public class LaboratorySeat extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "laboratory_id")
-
+    @JsonIgnore
     private Laboratory laboratory;
 
 
