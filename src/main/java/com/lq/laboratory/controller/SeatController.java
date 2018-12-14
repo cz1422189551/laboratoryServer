@@ -18,12 +18,20 @@ public class SeatController {
 
     @RequestMapping(value = "/add")
     public ResponseEntity add(Seat seat) {
+
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                Seat seat1 = new Seat(i,j);
+                EntityFactory.createResponse(seatService.insert(seat1));
+            }
+        }
+
         return EntityFactory.createResponse(seatService.insert(seat));
     }
 
     @RequestMapping(value = "/one/{id}")
     public ResponseEntity getOne(@PathVariable("id") String id) {
         Seat one = seatService.getOne(id);
-        return EntityFactory.createResponse(one) ;
+        return EntityFactory.createResponse(one);
     }
 }

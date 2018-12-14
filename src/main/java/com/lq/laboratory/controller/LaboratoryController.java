@@ -45,11 +45,11 @@ public class LaboratoryController {
         laboratory.setUser(userService.getOne(1 + ""));
         laboratory.setCloseDate(new Date());
         laboratory.setOpenDate(new Date());
-        laboratory.setRow(5);
-        laboratory.setCol(5);
+        laboratory.setRow(8);
+        laboratory.setCol(8);
         laboratory.setEnable(true);
 
-        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(5, 5));
+        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(8, 8));
 
         laboratory.setSeatList(seatList);
 
@@ -63,8 +63,8 @@ public class LaboratoryController {
         laboratory.setUser(userService.getOne(1 + ""));
         laboratory.setCloseDate(new Date());
         laboratory.setOpenDate(new Date());
-        laboratory.setRow(8);
-        laboratory.setCol(8);
+        laboratory.setRow(5);
+        laboratory.setCol(5);
         laboratory.setEnable(true);
         laboratory.setId(2);
         laboratory.setName("实验室" + laboratory.getId());
