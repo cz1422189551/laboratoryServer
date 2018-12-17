@@ -33,6 +33,12 @@ public class Appointment extends BaseEntity {
     //预约的时间
     private Date appointmentDate;
 
+    //分钟
+    private int minute = 30;
+
+    private int am = 0;
+
+
     //结束时间
     private Date endDate;
 

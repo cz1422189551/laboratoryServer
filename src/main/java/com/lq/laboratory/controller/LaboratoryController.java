@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +47,11 @@ public class LaboratoryController {
         laboratory.setUser(userService.getOne(1 + ""));
         laboratory.setCloseDate(new Date());
         laboratory.setOpenDate(new Date());
-        laboratory.setRow(8);
-        laboratory.setCol(8);
+        laboratory.setRow(5);
+        laboratory.setCol(5);
         laboratory.setEnable(true);
 
-        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(8, 8));
+        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(5, 5));
 
         laboratory.setSeatList(seatList);
 
@@ -115,5 +117,22 @@ public class LaboratoryController {
 
         return EntityFactory.createLaboratoryTypeEntity(all, laboratorySeatService);
     }
+
+    @RequestMapping(value = "/type/id}")
+    public LaboratoryTypeEntity queryAll(@PathVariable("id") String id) {
+        LaboratoryType type = laboratoryTypeService.getOne(id);
+
+        return EntityFactory.createLaboratoryTypeEntity(type, laboratorySeatService);
+    }
+
+    @RequestMapping(value = "/available}")
+    public LaboratoryTypeEntity queryAvailableLaboratory(@RequestParam Map<String, String> map) {
+        String laboratoryId = map.get("laboratoryId");
+        String startDate = map.get("startDate");
+        String endDate = map.get("endDate");
+        
+        return null;
+    }
+
 
 }
