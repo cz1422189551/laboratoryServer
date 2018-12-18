@@ -1,5 +1,6 @@
 package com.lq.laboratory.controller;
 
+import com.google.gson.Gson;
 import com.lq.laboratory.entity.Appointment;
 import com.lq.laboratory.entity.Laboratory;
 import com.lq.laboratory.entity.ResponseEntity;
@@ -32,36 +33,32 @@ public class AppointmentController {
     @Autowired
     LaboratoryServiceImpl laboratoryService;
 
-    @RequestMapping(value = "/add")
-    public ResponseEntity add() throws ParseException {
-        User user = service.getUserByUserNameAndPassword("q", "q");
-        Laboratory laboratory = laboratoryService.getOne(1 + "");
-        Date appointmentDate = DateUtil.stringToDate("2018-12-19 9:00");
-        int minutes = 5 * 30;
-
-        Date endDate = DateUtil.addMinute(appointmentDate, minutes);
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        Appointment ap = new Appointment(
-                user, laboratory, new Date(), appointmentDate, endDate, appointmentDate, 30, 1
-        );
-        return EntityFactory.createResponse(appointmentService.insert(ap));
-    }
-
 
     @RequestMapping(value = "/available")
     public List<Appointment> queryAvailableLaboratory(@RequestParam Map<String, String> map) throws ParseException {
         int minute = Integer.valueOf(map.get("minute"));
         String startDate = map.get("startDate");
 
-            Date date = DateUtil.addMinute(DateUtil.stringToDateWithTime(startDate), minute);
+        Date date = DateUtil.addMinute(DateUtil.stringToDateWithTime(startDate), minute);
         map.put("endDate", DateUtil.DateToString(date));
 
         //该时间段已经被占用的集合
         List<Appointment> occupation = appointmentService.getAll(AppointmentSpecification.findOccupationInfo(map));
 
         return occupation;
+    }
+
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public Appointment appointment(@RequestParam Map<String, String> map) throws ParseException {
+
+        Gson gson = new Gson();
+        Appointment appointment = gson.fromJson(map.get("appointment"), Appointment.class);
+
+        Date startDate = appointment.getAppointmentDate();
+        appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));
+        Appointment insert = appointmentService.insert(appointment);
+        return insert;
     }
 
 

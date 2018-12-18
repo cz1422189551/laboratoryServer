@@ -17,20 +17,12 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
 
     private String restTime = "12:00-15:00";
 
-    /**
-     * 查询某个时间段被占用的实验室信息
-     *
-     * @param map
-     * @return
-     */
-    public static Specification<Appointment> findOccupationInfo(Map<String, String> map) throws ParseException {
-        String laboratoryId = map.get("laboratoryId");
-        String startDateStr = map.get("startDate");
-        String enDateStr = map.get("endDate");
-        String dateStr = map.get("date");
-        Date startDate = DateUtil.stringToDateWithTime(startDateStr);
-        Date endDate = DateUtil.stringToDateWithTime(enDateStr);
-        Date date = DateUtil.stringToDate(dateStr);
+    public static Specification<Appointment> findOccupationInfo(String laboratoryId, Date startDate, Date endDate, Date date) throws ParseException {
+
+        return getAppointmentSpecification(laboratoryId, startDate, endDate, date);
+    }
+
+    private static Specification<Appointment> getAppointmentSpecification(String laboratoryId, Date startDate, Date endDate, Date date) {
         return (root, query, cb) -> {
             Path<Object> laboratory = root.get("laboratory");
             Path<Date> datePath = root.get("date");
@@ -64,7 +56,24 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
         };
     }
 
-    String sql="select ap.id ,ap.appointment_date '预约时间' , ap.end_date '结束时间',\n" +
+    /**
+     * 查询某个时间段被占用的实验室信息
+     *
+     * @param map
+     * @return
+     */
+    public static Specification<Appointment> findOccupationInfo(Map<String, String> map) throws ParseException {
+        String laboratoryId = map.get("laboratoryId");
+        String startDateStr = map.get("startDate");
+        String enDateStr = map.get("endDate");
+        String dateStr = map.get("date");
+        Date startDate = DateUtil.stringToDateWithTime(startDateStr);
+        Date endDate = DateUtil.stringToDateWithTime(enDateStr);
+        Date date = DateUtil.stringToDate(dateStr);
+        return getAppointmentSpecification(laboratoryId, startDate, endDate, date);
+    }
+
+    String sql = "select ap.id ,ap.appointment_date '预约时间' , ap.end_date '结束时间',\n" +
             "ap.`minute` '分钟' ,ap.date '日期' from  appointment ap\n" +
             "where laboratory_id=1\n" +
             "and date='2018-12-19'\n" +
