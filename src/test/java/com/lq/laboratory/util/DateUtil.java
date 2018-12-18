@@ -81,6 +81,17 @@ public class DateUtil {
     }
 
 
+    @Test
+    public void testMinutePlusAndDec() {
+        String date = "2018-12-18 8:30";
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm");
+        LocalDateTime parse = LocalDateTime.parse(date, df);
+        LocalDateTime localDateTime = parse.plusMinutes(30);
+        System.out.println(parse);
+        System.out.println(localDateTime.format(df));
+    }
+
+
     //初始化可用的时间
     public static List<String> initAvailableTime() {
         List<Integer> timeList = new ArrayList<>();

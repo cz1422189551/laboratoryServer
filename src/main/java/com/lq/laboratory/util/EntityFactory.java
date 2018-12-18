@@ -1,17 +1,14 @@
 package com.lq.laboratory.util;
 
 import com.lq.laboratory.entity.*;
-import com.lq.laboratory.entity.core.LaboratoryEntity;
-import com.lq.laboratory.entity.core.LaboratoryTypeEntity;
-import com.lq.laboratory.repository.specifi.LaboratorySeatSpecification;
-import com.lq.laboratory.services.LaboratorySeatServiceImpl;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * 响应实体生成
@@ -73,20 +70,20 @@ public class EntityFactory {
 
     }
 
-    public static LaboratoryTypeEntity createLaboratoryTypeEntity(LaboratoryType type, LaboratorySeatServiceImpl seatService) {
-        List<Laboratory> laboratoryList = type.getLaboratoryList();
-
-        List<LaboratoryEntity> collect = laboratoryList.stream().map(l -> {
-            List<LaboratorySeat> seatInfoList = seatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(l.getId()));
-            return new LaboratoryEntity(l, seatInfoList);
-        }).collect(Collectors.toList());
-
-        return new LaboratoryTypeEntity(type.getId(), type.getName(), collect);
-    }
-
-    public static List<LaboratoryTypeEntity> createLaboratoryTypeEntity(List<LaboratoryType> typeList, LaboratorySeatServiceImpl seatService) {
-        return typeList.stream().map(t -> createLaboratoryTypeEntity(t, seatService)).collect(Collectors.toList());
-    }
+//    public static LaboratoryTypeEntity createLaboratoryTypeEntity(LaboratoryType type, LaboratorySeatServiceImpl seatService) {
+//        List<Laboratory> laboratoryList = type.getLaboratoryList();
+//
+//        List<LaboratoryEntity> collect = laboratoryList.stream().map(l -> {
+//            List<LaboratorySeat> seatInfoList = seatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(l.getId()));
+//            return new LaboratoryEntity(l, seatInfoList);
+//        }).collect(Collectors.toList());
+//
+//        return new LaboratoryTypeEntity(type.getId(), type.getName(), collect);
+//    }
+//
+//    public static List<LaboratoryTypeEntity> createLaboratoryTypeEntity(List<LaboratoryType> typeList, LaboratorySeatServiceImpl seatService) {
+//        return typeList.stream().map(t -> createLaboratoryTypeEntity(t, seatService)).collect(Collectors.toList());
+//    }
 
 
 }

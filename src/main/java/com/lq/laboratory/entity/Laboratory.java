@@ -22,17 +22,17 @@ public class Laboratory extends BaseEntity {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "laboratory_seat"
-            , inverseJoinColumns = @JoinColumn(name = "seat_id")
-            , joinColumns = @JoinColumn(name = "laboratory_id"))
-    private List<Seat> seatList;
+//    @ManyToMany
+//    @JoinTable(name = "laboratory_seat"
+//            , inverseJoinColumns = @JoinColumn(name = "seat_id")
+//            , joinColumns = @JoinColumn(name = "laboratory_id"))
+//    private List<Seat> seatList;
 
-    public Laboratory(int id, User user, String name, List<Seat> seatList, int row, int col, boolean enable, Date openDate, Date closeDate, LaboratoryType laboratoryType) {
+    public Laboratory(int id, User user, String name, int row, int col, boolean enable, Date openDate, Date closeDate, LaboratoryType laboratoryType) {
         super(id);
         this.user = user;
         this.name = name;
-        this.seatList = seatList;
+//        this.seatList = seatList;
         this.row = row;
         this.col = col;
         this.enable = enable;
@@ -49,6 +49,8 @@ public class Laboratory extends BaseEntity {
 
     private int col;
 
+    //座位数量
+    private int seatCount;
 
     //是否启用
 

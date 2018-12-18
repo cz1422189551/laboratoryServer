@@ -15,8 +15,8 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
     @Autowired
     UserService userService;
 
-    @Autowired
-    LaboratorySeatServiceImpl laboratorySeatService;
+//    @Autowired
+//    LaboratorySeatServiceImpl laboratorySeatService;
 
 
     @Resource(name = "appointmentRepository")
