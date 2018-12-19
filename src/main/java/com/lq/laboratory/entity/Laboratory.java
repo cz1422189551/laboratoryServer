@@ -52,8 +52,11 @@ public class Laboratory extends BaseEntity {
     //座位数量
     private int seatCount;
 
-    //是否启用
 
+    //学生是否可用 1可用 ， 0不可用
+    private int availableType = 1;
+
+    //是否启用
     private boolean enable;
 
     //开放时间
@@ -63,6 +66,8 @@ public class Laboratory extends BaseEntity {
     //关闭时间
 
     private Date closeDate;
+
+    private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn

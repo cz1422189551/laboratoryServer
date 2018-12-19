@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.lq.laboratory.util.Const.STUDENT;
+
 @RestController
 @RequestMapping("/laboratory")
 public class LaboratoryController {
@@ -28,7 +30,6 @@ public class LaboratoryController {
 
     @Autowired
     UserServiceImpl userService;
-
 
 
     @Autowired
@@ -106,8 +107,14 @@ public class LaboratoryController {
 
     //查看一个实验室包含座位的信息
     @RequestMapping(value = "/type/getAll")
-    public List<LaboratoryType> queryAll() {
-        List<LaboratoryType> all = laboratoryTypeService.getAll();
+    public List<LaboratoryType> queryAll(@RequestParam Map<String, String> map) {
+        List<LaboratoryType> all = null;
+        if (map == null || map.get("userType") == null || "".equals(map.get("userType"))) {
+            all = laboratoryTypeService.getAll();
+        } else {
+            all = laboratoryTypeService.getAll();
+            all.stream().forEach(t -> t.getLaboratoryList().stream().filter(l -> l.getAvailableType() == STUDENT));
+        }
 
         return all;
     }
