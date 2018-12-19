@@ -66,7 +66,7 @@ public class Laboratory extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "laboratoryList")
     private LaboratoryType laboratoryType;
 
     @Override

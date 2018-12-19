@@ -37,10 +37,15 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
             Path<Date> datePath = root.get("date");
             Path<Date> startDatePath = root.get("appointmentDate");
             Path<Date> endDatePath = root.get("endDate");
+            //预约中的
+            int state = 1;
             Predicate p1 = cb.and(
-                    cb.equal(laboratory.get("id"), Integer.valueOf(laboratoryId)),
-                    cb.equal(datePath, date)
-            );
+                    cb.and(
+                            cb.equal(laboratory.get("id"), Integer.valueOf(laboratoryId)),
+                            cb.equal(datePath, date)
+                    )
+                    , cb.equal(root.get("state"), state));
+
             Predicate p2 = cb.and(
                     cb.lessThanOrEqualTo(startDatePath, startDate),
                     cb.greaterThanOrEqualTo(endDatePath, endDate)
@@ -85,6 +90,7 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
     String sql = "select ap.id ,ap.appointment_date '预约时间' , ap.end_date '结束时间',\n" +
             "ap.`minute` '分钟' ,ap.date '日期' from  appointment ap\n" +
             "where laboratory_id=1\n" +
+            "and state=1\n" +
             "and date='2018-12-19'\n" +
             "and (\n" +
             "appointment_date<='2018-12-19 09:00' and end_date>='2018-12-19 10:00'\n" +

@@ -115,6 +115,14 @@ public class DateUtil {
         return stringList;
     }
 
+
+    @Test
+    public void test(){
+         SimpleDateFormat sdf4 = new SimpleDateFormat("H:mm");
+        String format = sdf4.format(new Date());
+        System.out.println(format);
+    }
+
     //默认时间
     static int baseTime = 30;
     static int start = 8;

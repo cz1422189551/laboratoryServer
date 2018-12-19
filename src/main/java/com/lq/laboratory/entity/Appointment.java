@@ -43,6 +43,6 @@ public class Appointment extends BaseEntity {
 
 
     //预约状态，1 预约中 ， 0 取消预约
-    private int enable = 1;
+    private int state = 1;
 
 }
