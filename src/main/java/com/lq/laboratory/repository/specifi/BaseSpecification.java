@@ -26,12 +26,16 @@ public class BaseSpecification<T> {
             and.eq(!StringUtils.isEmpty(entry.getValue()), entry.getKey(), entry.getValue());
         });
         return and.build();
+    }
 
-//        and.eq(!StringUtils.isEmpty(map.get("userName")), "userName", "admin1")
-//
-//                .eq(!StringUtils.isEmpty(map.get("tel")), "tel", map.get())
-//                .eq(!StringUtils.isEmpty(map.get("userName")), "userType", 1)
-//                .build();
+    public static <T> Specification findByAndInt(Map<String, Integer> map) {
+
+        PredicateBuilder<T> and = Specifications.<T>and();
+
+        map.entrySet().stream().forEach(entry -> {
+            and.eq(!StringUtils.isEmpty(entry.getValue()), entry.getKey(), entry.getValue());
+        });
+        return and.build();
     }
 
 }

@@ -15,10 +15,12 @@ public class FormatUtil {
         return (char) rs;
     }
 
-    public static int getPageAfterRemove(Map<String, String> map , String key) {
+    public static int getPageAfterRemove(Map<String, String> map, String key) {
         int pageSize = Integer.valueOf(map.get(key));
         map.remove(key);
         return pageSize;
     }
+
+
 
 }

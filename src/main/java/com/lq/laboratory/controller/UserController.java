@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Map;
 
 import static com.lq.laboratory.util.Const.STUDENT;
+import static com.lq.laboratory.util.Const.TEACHER;
 
 @RestController()
 @RequestMapping("/user")
@@ -68,7 +69,7 @@ public class UserController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity add(String fsFormData) {
-        User   u = (User) JsonUtils.fromJson(fsFormData, User.class);
+        User u = (User) JsonUtils.fromJson(fsFormData, User.class);
         u.setCreateTime(new Date());
 //        for (int i = 0; i < 50; i++) {
 //            User u = new Student(i + 1, "admin" + (i + 1), "admin" + (i + 1), "狮子吃咸鱼" + i, "18807772672", 1 % 2, STUDENT, new Date(), "广州", "计科本", "电信学院");
@@ -85,6 +86,20 @@ public class UserController {
         User u = (User) JsonUtils.fromJson(fsFormData, User.class);
 //        User user1 = new Student(99, "admin", "admin", "测试", "13197670831", true, STUDENT, new Date(), "钦州", "毕业", "研发部");
         return EntityFactory.createResponse(userService.update(u));
+    }
+
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public User save(@RequestParam Map<String, String> map) throws UnsupportedEncodingException {
+        String userType = map.get("userType");
+        User u = null;
+        if (STUDENT == Integer.valueOf(userType)) {
+            u = (Student) JsonUtils.fromJson(map.get("user"), Student.class);
+        } else if (TEACHER == Integer.valueOf(userType)) {
+            u = (Teacher) JsonUtils.fromJson(map.get("user"), Teacher.class);
+        }
+        User user = userService.updateEntity(u);
+        if (user != null) return user;
+        return u;
 
     }
 

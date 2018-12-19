@@ -30,6 +30,8 @@ public interface IService<T> {
 
     int update(T t);
 
+    T updateEntity(T t);
+
     boolean delete(String id);
 
     default Page<T> getList( Specification<T> specification, int pageNumber, int pageSize) {

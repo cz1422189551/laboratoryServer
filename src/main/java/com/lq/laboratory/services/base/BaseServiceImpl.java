@@ -18,6 +18,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class BaseServiceImpl<T> implements IService<T> {
+    @Override
+    public T updateEntity(T t) {
+        BaseEntity entity = (BaseEntity) t;
+        T one = getOne(entity.getId() + "");
+        if (one == null) return null;
+        return repository.saveAndFlush(t);
+    }
 
     protected BaseRepository<T, Integer> repository;
 
@@ -47,10 +54,7 @@ public abstract class BaseServiceImpl<T> implements IService<T> {
     @Transactional
     @Override
     public int update(T t) {
-        BaseEntity entity = (BaseEntity) t;
-        T one = getOne(entity.getId() + "");
-        if (one == null) return 0;
-        return repository.saveAndFlush(t) == null ? 0 : 1;
+        return updateEntity(t) == null ? 0 : 1;
     }
 
     @Transactional

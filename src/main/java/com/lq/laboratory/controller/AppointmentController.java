@@ -1,17 +1,18 @@
 package com.lq.laboratory.controller;
 
 import com.google.gson.Gson;
-import com.lq.laboratory.entity.Appointment;
-import com.lq.laboratory.entity.Laboratory;
-import com.lq.laboratory.entity.ResponseEntity;
-import com.lq.laboratory.entity.User;
+import com.lq.laboratory.entity.*;
 import com.lq.laboratory.repository.specifi.AppointmentSpecification;
+import com.lq.laboratory.repository.specifi.BaseSpecification;
+import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.AppointmentServiceImpl;
 import com.lq.laboratory.services.LaboratoryServiceImpl;
 import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.util.DateUtil;
 import com.lq.laboratory.util.EntityFactory;
+import com.lq.laboratory.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -59,6 +60,15 @@ public class AppointmentController {
         appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));
         Appointment insert = appointmentService.insert(appointment);
         return insert;
+    }
+
+    @RequestMapping(value = "/getList", method = RequestMethod.GET)
+    public Result getList(@RequestParam Map<String, String> map) throws ParseException {
+        int pageNum = FormatUtil.getPageAfterRemove(map, "pageNum");
+        int pageSize = FormatUtil.getPageAfterRemove(map, "pageSize");
+        Page page = appointmentService.getList(AppointmentSpecification.<Appointment>getListByUserName(map.get("userId")), pageNum, pageSize);
+        Result result = EntityFactory.createResult(page);
+        return result;
     }
 
 

@@ -1,6 +1,7 @@
 package com.lq.laboratory.repository.specifi;
 
 import com.lq.laboratory.entity.Appointment;
+import com.lq.laboratory.entity.User;
 import com.lq.laboratory.util.DateUtil;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -16,6 +17,14 @@ import java.util.Map;
 public class AppointmentSpecification extends BaseSpecification<Appointment> {
 
     private String restTime = "12:00-15:00";
+
+
+    public static Specification<Appointment> getListByUserName(String userId) {
+        return (root, query, cb) -> cb.equal(
+                root.get("user").get("id"), userId
+        );
+    }
+
 
     public static Specification<Appointment> findOccupationInfo(String laboratoryId, Date startDate, Date endDate, Date date) throws ParseException {
 
