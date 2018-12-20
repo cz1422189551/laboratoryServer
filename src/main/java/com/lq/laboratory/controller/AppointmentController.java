@@ -8,9 +8,7 @@ import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.AppointmentServiceImpl;
 import com.lq.laboratory.services.LaboratoryServiceImpl;
 import com.lq.laboratory.services.UserServiceImpl;
-import com.lq.laboratory.util.DateUtil;
-import com.lq.laboratory.util.EntityFactory;
-import com.lq.laboratory.util.FormatUtil;
+import com.lq.laboratory.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +49,7 @@ public class AppointmentController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Appointment appointment(@RequestParam Map<String, String> map) throws ParseException {
+    public ResponseEntity appointment(@RequestParam Map<String, String> map) throws ParseException {
 
         Gson gson = new Gson();
         Appointment appointment = gson.fromJson(map.get("appointment"), Appointment.class);
@@ -59,7 +57,7 @@ public class AppointmentController {
         Date startDate = appointment.getAppointmentDate();
         appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));
         Appointment insert = appointmentService.insert(appointment);
-        return insert;
+        return EntityFactory.createResponse(insert);
     }
 
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
@@ -74,7 +72,10 @@ public class AppointmentController {
 
     //取消预约，将enable至为0
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
-    public ResponseEntity cancel(@RequestBody Appointment appointment) {
+    public ResponseEntity cancel(@RequestParam Map<String, String> map) {
+        String json = map.get("myAppointment");
+        Appointment appointment = (Appointment) JsonUtils.fromJson(json, Appointment.class);
+        appointment.setState(Const.CANCEL);
         return EntityFactory.createResponse(appointmentService.update(appointment));
     }
 

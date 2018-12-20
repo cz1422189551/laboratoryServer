@@ -24,6 +24,7 @@ public class EntityFactory {
 
     public static final int RUNTIME_ERROR = 500;
 
+    public static final int APPOINT_ERROR = 500;
 
     public static ResponseEntity createRunTimeError() {
         return createErrorResponse(RUNTIME_ERROR, "服务器运行异常");

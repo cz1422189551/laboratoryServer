@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.lq.laboratory.util.Const.APPOINTING;
+
 public class AppointmentSpecification extends BaseSpecification<Appointment> {
 
     private String restTime = "12:00-15:00";
@@ -31,20 +33,82 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
         return getAppointmentSpecification(laboratoryId, startDate, endDate, date);
     }
 
+    public static Specification<Appointment> findConflictDate(String userId, Date startDate, Date endDate, Date date) throws ParseException {
+
+        return getUserAppointByStartDateAndDate(userId, startDate, endDate, date);
+    }
+
+    /**
+     * 获取某时间段之内，被占用的实验室数量
+     *
+     * @param laboratoryId 实验室
+     * @param startDate    开始时间
+     * @param endDate      结束时间
+     * @param date         日期
+     * @return
+     */
     private static Specification<Appointment> getAppointmentSpecification(String laboratoryId, Date startDate, Date endDate, Date date) {
         return (root, query, cb) -> {
             Path<Object> laboratory = root.get("laboratory");
             Path<Date> datePath = root.get("date");
             Path<Date> startDatePath = root.get("appointmentDate");
             Path<Date> endDatePath = root.get("endDate");
-            //预约中的
-            int state = 1;
+
             Predicate p1 = cb.and(
                     cb.and(
                             cb.equal(laboratory.get("id"), Integer.valueOf(laboratoryId)),
                             cb.equal(datePath, date)
                     )
-                    , cb.equal(root.get("state"), state));
+                    , cb.equal(root.get("state"), APPOINTING));
+
+            Predicate p2 = cb.and(
+                    cb.lessThanOrEqualTo(startDatePath, startDate),
+                    cb.greaterThanOrEqualTo(endDatePath, endDate)
+            );
+
+            Predicate orAndP1 = cb.and(
+                    cb.greaterThan(endDatePath, startDate),
+                    cb.lessThanOrEqualTo(endDatePath, endDate)
+            );
+            //第一个条件
+            Predicate orP1 = cb.and(
+                    cb.lessThanOrEqualTo(startDatePath, startDate),
+                    orAndP1
+            );
+            //第二个条件
+            Predicate orP2 = cb.and(
+                    cb.greaterThanOrEqualTo(startDatePath, startDate),
+                    cb.lessThan(startDatePath, endDate)
+            );
+
+            Predicate p3 = cb.or(cb.or(p2, orP1), orP2);
+            return cb.and(p1, p3);
+        };
+    }
+
+    /**
+     * 已有预约冲突
+     *
+     * @param userId
+     * @param startDate
+     * @param endDate
+     * @param date
+     * @return
+     */
+    private static Specification<Appointment> getUserAppointByStartDateAndDate(String userId, Date startDate, Date endDate, Date date) {
+        return (root, query, cb) -> {
+            Path<Object> laboratory = root.get("user");
+            Path<Date> datePath = root.get("date");
+            Path<Date> startDatePath = root.get("appointmentDate");
+            Path<Date> endDatePath = root.get("endDate");
+            //预约中的
+
+            Predicate p1 = cb.and(
+                    cb.and(
+                            cb.equal(laboratory.get("id"), Integer.valueOf(userId)),
+                            cb.equal(datePath, date)
+                    )
+                    , cb.equal(root.get("state"), APPOINTING));
 
             Predicate p2 = cb.and(
                     cb.lessThanOrEqualTo(startDatePath, startDate),
@@ -69,6 +133,7 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
             return cb.and(p1, p3);
         };
     }
+
 
     /**
      * 查询某个时间段被占用的实验室信息

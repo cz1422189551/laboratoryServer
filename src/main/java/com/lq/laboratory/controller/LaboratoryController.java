@@ -97,12 +97,12 @@ public class LaboratoryController {
 
     //查看一个实验室包含座位的信息
     @RequestMapping(value = "/getList")
-    public ResponseEntity update(@RequestParam Map<String, String> map) {
+    public Result update(@RequestParam Map<String, String> map) {
 
         int pageNum = FormatUtil.getPageAfterRemove(map, "pageNum");
         int pageSize = FormatUtil.getPageAfterRemove(map, "pageSize");
-        Page page = laboratoryService.getList(BaseSpecification.<Laboratory>findByAnd(map), pageNum, pageSize);
-        return EntityFactory.createResponse(EntityFactory.createResult(page));
+        Result result = laboratoryService.getList(pageNum, pageSize);
+        return result;
     }
 
     //查看一个实验室包含座位的信息
@@ -113,7 +113,17 @@ public class LaboratoryController {
             all = laboratoryTypeService.getAll();
         } else {
             all = laboratoryTypeService.getAll();
-            all.stream().forEach(t -> t.getLaboratoryList().stream().filter(l -> l.getAvailableType() == STUDENT));
+            all.stream()
+                    .forEach(
+                            t ->
+                                    t.setLaboratoryList(
+                                            t.getLaboratoryList()
+                                                    .stream()
+                                                    .filter(l -> l.getAvailableType() == STUDENT)
+                                                    .collect(Collectors.toList())
+                                    )
+                    );
+
         }
 
         return all;
