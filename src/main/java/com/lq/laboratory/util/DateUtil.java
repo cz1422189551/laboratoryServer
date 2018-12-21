@@ -2,14 +2,13 @@ package com.lq.laboratory.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateUtil {
     static DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm");
+
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:mm");
 
     static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -41,6 +40,19 @@ public class DateUtil {
         ZoneId zone = ZoneId.systemDefault();
         Instant instant = localDateTime.atZone(zone).toInstant();
         return Date.from(instant);
+    }
+
+//    public static void main(String[] args) {
+//        System.out.println(DateUtil.localDateToDate(LocalDate.now()));
+//    }
+
+    //LocalDate转Date
+    public static Date localDateToDate(LocalDate localDate) {
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime zdt = localDate.atStartOfDay(zone);
+
+        Date date = Date.from(zdt.toInstant());
+        return date;
     }
 
     //字符串转Date 带时间

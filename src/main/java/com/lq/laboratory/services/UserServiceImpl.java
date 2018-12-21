@@ -4,6 +4,7 @@ import com.lq.laboratory.entity.Result;
 import com.lq.laboratory.entity.Student;
 import com.lq.laboratory.entity.Teacher;
 import com.lq.laboratory.entity.User;
+import com.lq.laboratory.exception.UserExpcetion;
 import com.lq.laboratory.repository.BaseRepository;
 import com.lq.laboratory.repository.UserRepository;
 import com.lq.laboratory.services.base.UserService;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.lq.laboratory.util.Const.STUDENT;
+import static com.lq.laboratory.util.Const.TEACHER;
 
 @Service
 public class UserServiceImpl extends UserService {
@@ -41,12 +43,14 @@ public class UserServiceImpl extends UserService {
     @Transactional
     @Override
     public User insert(User user) {
-
-        if (user == null) throw new RuntimeException("插入对象为null");
-        return userRepository.save(user);
-//        return user.getUserType() == STUDENT
-//                ? studentService.insert((Student) user)
-//                : teacherService.insert((Teacher) user);
+        User res = null;
+        if (user == null) throw new UserExpcetion("不能添加空值");
+        if (user.getUserType() == STUDENT) {
+            res = studentService.insert((Student) user);
+        } else if (user.getUserType() == TEACHER) {
+            res = teacherService.insert((Teacher) user);
+        }
+        return res;
     }
 
     @Transactional

@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(indexes = {@Index(columnList = "date"),@Index(columnList = "appointmentDate")})
+@Table(indexes = {@Index(columnList = "date"), @Index(columnList = "state"), @Index(columnList = "appointmentDate")})
 public class Appointment extends BaseEntity {
 
     //预约的用户

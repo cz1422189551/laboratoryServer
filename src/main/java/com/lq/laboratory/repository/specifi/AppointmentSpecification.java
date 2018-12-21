@@ -134,6 +134,20 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
         };
     }
 
+    public static Specification<Appointment> toUsingList(Date date, Date startDate, Date endDate, int state) {
+        return ((root, query, cb) -> {
+            Predicate dateAndStatePredicate = cb.and(
+                    cb.equal(root.get("date"), date),
+                    cb.equal(root.get("state"), APPOINTING)
+            );
+            Predicate startToEndPredicate = cb.and(
+                    cb.lessThanOrEqualTo(root.get("appointmentDate"), startDate),
+                    cb.greaterThan(root.get("endDate"), endDate)
+            );
+            return cb.and(dateAndStatePredicate, startToEndPredicate);
+        });
+    }
+
 
     /**
      * 查询某个时间段被占用的实验室信息

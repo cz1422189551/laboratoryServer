@@ -24,6 +24,8 @@ public class EntityFactory {
 
     public static final int RUNTIME_ERROR = 500;
 
+    public static final int USER_ERROR = 600;
+
     public static final int APPOINT_ERROR = 500;
 
     public static ResponseEntity createRunTimeError() {
@@ -42,6 +44,10 @@ public class EntityFactory {
     //创建正常的响应实体
     public static <T> ResponseEntity<T> createResponse(T t) {
         return new ResponseEntity<>(SUCCESS, "success", t);
+    }
+
+    public static <T> ResponseEntity<T> createResponse(T t, String msg) {
+        return new ResponseEntity<>(SUCCESS, msg, t);
     }
 
 

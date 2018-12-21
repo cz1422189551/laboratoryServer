@@ -23,7 +23,6 @@ public class Announcement extends BaseEntity {
 
     private String pushMan;
 
-    @Temporal(TemporalType.TIME)
     private Date pushDate;
 
 

@@ -1,10 +1,12 @@
 package com.lq.laboratory;
 
+import com.lq.laboratory.util.DateUtil;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.time.LocalDate;
 
 public class TestDriver {
     
@@ -20,6 +22,11 @@ public class TestDriver {
         float num1 = 15.0f;
         float num2 = 8.0f;
         System.out.println(Math.round(num1/num2));
+    }
+
+    @Test
+    public void testLocalDateToDate(){
+        LocalDate now = LocalDate.now();
     }
     
 }

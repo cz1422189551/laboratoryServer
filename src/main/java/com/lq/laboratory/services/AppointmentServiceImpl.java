@@ -3,22 +3,23 @@ package com.lq.laboratory.services;
 import com.lq.laboratory.entity.Appointment;
 import com.lq.laboratory.entity.User;
 import com.lq.laboratory.exception.AppointmentException;
+import com.lq.laboratory.repository.AppointmentRepository;
 import com.lq.laboratory.repository.BaseRepository;
 import com.lq.laboratory.repository.specifi.AppointmentSpecification;
 import com.lq.laboratory.services.base.BaseServiceImpl;
 import com.lq.laboratory.services.base.UserService;
+import com.lq.laboratory.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import static com.lq.laboratory.util.Const.SEAT_COUNT;
-import static com.lq.laboratory.util.Const.STUDENT;
-import static com.lq.laboratory.util.Const.TEACHER;
+import static com.lq.laboratory.util.Const.*;
 
 @Service
 public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
@@ -26,8 +27,36 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
     @Autowired
     UserService userService;
 
-//    @Autowired
-//    LaboratorySeatServiceImpl laboratorySeatService;
+    AppointmentRepository appointmentRepository;
+
+
+    /**
+     * 将预约状态 -> 使用状态
+     *
+     * @param date        当天日期
+     * @param currentDate 当前时间
+     * @return
+     */
+    @Transactional
+    public int updateAppointToUsing(Date date, Date currentDate) {
+        return appointmentRepository.updateAppointStateToUsing(
+                USING, date, currentDate, APPOINTING
+        );
+    }
+
+    /**
+     * 将使用状态 -> 完成状态
+     *
+     * @param date        当天日期
+     * @param currentDate 当前时间
+     * @return
+     */
+    @Transactional
+    public int updateUsingToFinish(Date date, Date currentDate) {
+        return appointmentRepository.updateAppointStateToFinsh(
+                USING, date, currentDate, APPOINTING
+        );
+    }
 
 
     @Transactional
@@ -72,6 +101,7 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
     @Override
     public void setRepository(BaseRepository<Appointment, Integer> repository) {
         super.setRepository(repository);
+        appointmentRepository = (AppointmentRepository) repository;
     }
 
     //判断想要预约的实验室可用数量， 可用则 返回false

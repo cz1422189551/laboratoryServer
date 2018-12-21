@@ -14,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(uniqueConstraints = @UniqueConstraint(name = "uni_name",columnNames = "userName"))
 public class User extends BaseEntity {
 
     protected String name;
@@ -23,14 +24,14 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public User(int id, String name, String userName, String password, String tel, int gender, int userType, Date createTime) {
+    public User(int id, String name, String userName, String password, String tel, int gender, int userType ) {
         super(id);
         this.userName = userName;
         this.password = password;
         this.tel = tel;
         this.gender = gender;
         this.userType = userType;
-        this.createTime = createTime;
+
     }
 
     protected String userName;
@@ -45,8 +46,8 @@ public class User extends BaseEntity {
     //用户类别（学生，或教师）
     protected int userType;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    protected Date createTime;
+
+
 
 
 }

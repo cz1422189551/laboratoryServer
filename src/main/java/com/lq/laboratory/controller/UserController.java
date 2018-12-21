@@ -1,7 +1,8 @@
 package com.lq.laboratory.controller;
 
-import com.google.gson.Gson;
+
 import com.lq.laboratory.entity.*;
+import com.lq.laboratory.exception.UserExpcetion;
 import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.base.UserService;
 import com.lq.laboratory.util.EntityFactory;
@@ -70,7 +71,6 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity add(String fsFormData) {
         User u = (User) JsonUtils.fromJson(fsFormData, User.class);
-        u.setCreateTime(new Date());
 //        for (int i = 0; i < 50; i++) {
 //            User u = new Student(i + 1, "admin" + (i + 1), "admin" + (i + 1), "狮子吃咸鱼" + i, "18807772672", 1 % 2, STUDENT, new Date(), "广州", "计科本", "电信学院");
 //            EntityFactory.createResponse(userService.insert(u));
@@ -89,18 +89,37 @@ public class UserController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public User save(@RequestParam Map<String, String> map) throws UnsupportedEncodingException {
+    public ResponseEntity save(@RequestParam Map<String, String> map) {
+        User u = getUserByUserType(map);
+        User user = userService.updateEntity(u);
+        if (user != null) return EntityFactory.createResponse(user, "保存成功");
+        throw new UserExpcetion("保存失败");
+    }
+
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity register(@RequestParam Map<String, String> map) {
+        User u = getUserByUserType(map);
+        User user = userService.insert(u);
+
+        return EntityFactory.createResponse(user, "注册成功");
+
+    }
+
+    private User getUserByUserType(Map<String, String> map) {
         String userType = map.get("userType");
         User u = null;
-        if (STUDENT == Integer.valueOf(userType)) {
-            u = (Student) JsonUtils.fromJson(map.get("user"), Student.class);
-        } else if (TEACHER == Integer.valueOf(userType)) {
-            u = (Teacher) JsonUtils.fromJson(map.get("user"), Teacher.class);
+        try {
+            if (STUDENT == Integer.valueOf(userType)) {
+                u = (Student) JsonUtils.fromJson(map.get("user"), Student.class);
+            } else if (TEACHER == Integer.valueOf(userType)) {
+                u = (Teacher) JsonUtils.fromJson(map.get("user"), Teacher.class);
+            }
+        } catch (Exception e) {
+            throw new UserExpcetion(e);
         }
-        User user = userService.updateEntity(u);
-        if (user != null) return user;
-        return u;
 
+        return u;
     }
 
 
