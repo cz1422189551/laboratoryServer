@@ -51,8 +51,8 @@ public class AppointmentController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity appointment(@RequestParam Map<String, String> map) throws ParseException {
 
-        Gson gson = new Gson();
-        Appointment appointment = gson.fromJson(map.get("appointment"), Appointment.class);
+
+        Appointment appointment = (Appointment) JsonUtils.fromJson(map.get("appointment"), Appointment.class);
 
         Date startDate = appointment.getAppointmentDate();
         appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));

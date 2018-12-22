@@ -63,11 +63,12 @@ public class UserServiceImpl extends UserService {
                 : teacherService.update((Teacher) user);
     }
 
-    @Transactional
-    @Override
-    public boolean delete(String id) {
-        return false;
-    }
+//    @Transactional
+//    @Override
+//    public boolean delete(String id) {
+//        userRepository.deleteById(Integer.valueOf(id));
+//        return true;
+//    }
 
     @Override
     public boolean clear() {

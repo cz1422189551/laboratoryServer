@@ -106,6 +106,15 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/delete/{id}")
+    public ResponseEntity delete(@PathVariable("id") String id) {
+        userService.delete(id);
+
+        return null;
+
+    }
+
+
     private User getUserByUserType(Map<String, String> map) {
         String userType = map.get("userType");
         User u = null;

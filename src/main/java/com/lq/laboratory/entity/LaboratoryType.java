@@ -14,9 +14,14 @@ import java.util.List;
 @Entity
 public class LaboratoryType extends BaseEntity {
 
+
+
+
     private String name;
 
-    @OneToMany(mappedBy = "laboratoryType", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(
+//            mappedBy = "laboratoryType",
+            fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Laboratory> laboratoryList;
 
 

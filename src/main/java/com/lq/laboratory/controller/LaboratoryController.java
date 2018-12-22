@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.lq.laboratory.util.Const.STUDENT;
@@ -36,6 +33,20 @@ public class LaboratoryController {
     LaboratoryTypeServiceImpl laboratoryTypeService;
 
 
+    @RequestMapping(value = "/type/delete/{id}")
+    public ResponseEntity deleteType(@PathVariable("id") String id) {
+        boolean delete = laboratoryTypeService.delete(id);
+        return null;
+    }
+
+    @RequestMapping(value = "/type/add")
+    public ResponseEntity addType() {
+        LaboratoryType laboratoryType = new LaboratoryType("物理",null);
+        laboratoryTypeService.insert(laboratoryType);
+        return null;
+    }
+
+
     @RequestMapping(value = "/add")
     public ResponseEntity add(Laboratory laboratory) {
 
@@ -45,12 +56,19 @@ public class LaboratoryController {
         laboratory.setRow(5);
         laboratory.setCol(5);
         laboratory.setEnable(true);
+        laboratory.setName("物理实验室1号");
+        LaboratoryType laboratoryType = new LaboratoryType();
+        laboratoryType.setId(1);
+        laboratoryType.setName("物理");
+        List<Laboratory> laboratoryList = new ArrayList<>();
+        laboratoryList.add(laboratory);
+        laboratoryType.setLaboratoryList(laboratoryList);
 
 //        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(5, 5));
 //
 //        laboratory.setSeatList(seatList);
 
-        return EntityFactory.createResponse(laboratoryService.insert(laboratory));
+        return EntityFactory.createResponse(laboratoryTypeService.insert(laboratoryType));
     }
 
     //更新实验室信息
