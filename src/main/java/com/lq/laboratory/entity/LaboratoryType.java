@@ -20,7 +20,7 @@ public class LaboratoryType extends BaseEntity {
     private String name;
 
     @OneToMany(
-//            mappedBy = "laboratoryType",
+            mappedBy = "laboratoryType",
             fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Laboratory> laboratoryList;
 

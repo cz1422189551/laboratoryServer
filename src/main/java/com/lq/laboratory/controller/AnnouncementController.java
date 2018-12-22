@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.Map;
 
 @RestController()
@@ -46,6 +47,15 @@ public class AnnouncementController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity add(@RequestBody Announcement announcement) {
         return EntityFactory.createResponse(service.insert(announcement));
+    }
+
+    @RequestMapping(value = "/insert")
+    public ResponseEntity add() {
+        for (int i = 1; i < 20; i++) {
+            Announcement announcement = new Announcement("公告"+i,"公告"+i,"狮子吃咸鱼",new Date());
+            EntityFactory.createResponse(service.insert(announcement));
+        }
+        return null;
     }
 
 

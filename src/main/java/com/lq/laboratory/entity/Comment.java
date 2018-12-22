@@ -30,7 +30,7 @@ public class Comment extends BaseEntity  {
     private Laboratory laboratory;
 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user")
 
     private User user;

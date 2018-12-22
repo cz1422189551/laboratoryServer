@@ -4,6 +4,7 @@ package com.lq.laboratory.controller;
 import com.lq.laboratory.entity.*;
 import com.lq.laboratory.exception.UserExpcetion;
 import com.lq.laboratory.repository.specifi.UserSpecification;
+import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.services.base.UserService;
 import com.lq.laboratory.util.EntityFactory;
 import com.lq.laboratory.util.FormatUtil;

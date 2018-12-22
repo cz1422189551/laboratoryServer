@@ -69,7 +69,7 @@ public class Laboratory extends BaseEntity {
 
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     @JsonIgnoreProperties(value = "laboratoryList")
     private LaboratoryType laboratoryType;

@@ -12,4 +12,6 @@ public interface UserRepository extends BaseRepository<User, Integer> {
 
     User findUserByUserNameAndPassword(@Param("username") String userName, @Param("password") String password);
 
+    User findByUserName(String useName);
+
 }

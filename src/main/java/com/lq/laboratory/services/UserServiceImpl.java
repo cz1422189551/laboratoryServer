@@ -45,6 +45,8 @@ public class UserServiceImpl extends UserService {
     public User insert(User user) {
         User res = null;
         if (user == null) throw new UserExpcetion("不能添加空值");
+        User byUserName = userRepository.findByUserName(user.getUserName());
+        if (byUserName != null && !"".equals(byUserName.getUserName())) throw new UserExpcetion("该账号已被注册");
         if (user.getUserType() == STUDENT) {
             res = studentService.insert((Student) user);
         } else if (user.getUserType() == TEACHER) {
