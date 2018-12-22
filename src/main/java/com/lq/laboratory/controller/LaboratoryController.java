@@ -2,18 +2,23 @@ package com.lq.laboratory.controller;
 
 import com.lq.laboratory.entity.*;
 
+import com.lq.laboratory.repository.specifi.AppointmentSpecification;
 import com.lq.laboratory.repository.specifi.BaseSpecification;
 import com.lq.laboratory.services.*;
+import com.lq.laboratory.util.DateUtil;
 import com.lq.laboratory.util.EntityFactory;
 import com.lq.laboratory.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.lq.laboratory.util.Const.APPOINTING;
 import static com.lq.laboratory.util.Const.STUDENT;
 
 @RestController
@@ -41,7 +46,7 @@ public class LaboratoryController {
 
     @RequestMapping(value = "/type/add")
     public ResponseEntity addType() {
-        LaboratoryType laboratoryType = new LaboratoryType("物理",null);
+        LaboratoryType laboratoryType = new LaboratoryType("物理", null);
         laboratoryTypeService.insert(laboratoryType);
         return null;
     }
@@ -122,6 +127,8 @@ public class LaboratoryController {
         Result result = laboratoryService.getList(pageNum, pageSize);
         return result;
     }
+
+
 
     //查看一个实验室包含座位的信息
     @RequestMapping(value = "/type/getAll")

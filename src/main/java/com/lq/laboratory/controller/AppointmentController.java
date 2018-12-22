@@ -11,6 +11,7 @@ import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -18,6 +19,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.lq.laboratory.util.Const.APPOINTING;
 
 @RestController
 @RequestMapping("appointment")
@@ -69,6 +72,27 @@ public class AppointmentController {
         return result;
     }
 
+
+    //模糊查询 通过laboratoryName 和 date
+    @RequestMapping(value = "/getListByName")
+    public Result findByNameAndDate(@RequestParam Map<String, String> map) throws ParseException {
+
+        String laboratoryName = map.get("laboratoryName");
+        String date = map.get("date");
+        int pageNum = FormatUtil.getPageAfterRemove(map, "pageNum");
+        int pageSize = FormatUtil.getPageAfterRemove(map, "pageSize");
+        Page list = null;
+        if (laboratoryName == null || "".equals(laboratoryName)) {
+            map.put("state", APPOINTING + "");
+            list = laboratoryService.getList(
+                    AppointmentSpecification.findByDate(DateUtil.stringToDate(date)), pageNum, pageSize);
+        } else {
+            Specification byNameAndDate = AppointmentSpecification.findByNameAndDate(laboratoryName, DateUtil.stringToDate(date));
+            list = appointmentService.getList(byNameAndDate, pageNum, pageSize);
+        }
+
+        return EntityFactory.createResult(list);
+    }
 
     //取消预约，将enable至为0
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)

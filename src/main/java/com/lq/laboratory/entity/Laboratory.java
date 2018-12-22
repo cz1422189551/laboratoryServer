@@ -69,6 +69,8 @@ public class Laboratory extends BaseEntity {
 
     private String description;
 
+    private String address;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     @JsonIgnoreProperties(value = "laboratoryList")

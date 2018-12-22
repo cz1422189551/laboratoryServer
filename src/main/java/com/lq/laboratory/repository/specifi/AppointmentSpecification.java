@@ -21,6 +21,23 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
     private String restTime = "12:00-15:00";
 
 
+    public static Specification findByNameAndDate(String laboratoryName, Date date) {
+        String like = "%" + laboratoryName + "%";
+        return (root, query, cb) -> cb.and(cb.and(
+                cb.like(root.get("laboratory").get("name"), like),
+                cb.equal(root.get("date"), date)
+        ), cb.equal(root.get("state"), APPOINTING));
+    }
+
+    public static Specification findByDate(Date date) {
+
+        return (root, query, cb) -> cb.and(
+                cb.equal(root.get("date"), date)
+                , cb.equal(root.get("state"), APPOINTING)
+        );
+    }
+
+
     public static Specification<Appointment> getListByUserName(String userId) {
         return (root, query, cb) -> cb.equal(
                 root.get("user").get("id"), userId
