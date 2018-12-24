@@ -183,6 +183,8 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
         return getAppointmentSpecification(laboratoryId, startDate, endDate, date);
     }
 
+
+
     String sql = "select ap.id ,ap.appointment_date '预约时间' , ap.end_date '结束时间',\n" +
             "ap.`minute` '分钟' ,ap.date '日期' from  appointment ap\n" +
             "where laboratory_id=1\n" +
