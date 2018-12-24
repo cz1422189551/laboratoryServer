@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(uniqueConstraints = @UniqueConstraint(name = "uni_name", columnNames = "userName"))
+@Table(uniqueConstraints = {@UniqueConstraint(name = "uni_user_name", columnNames = {"userName"})})
 public class User extends BaseEntity {
 
     protected String name;
@@ -37,6 +37,7 @@ public class User extends BaseEntity {
 
     }
 
+    @Column(length = 20)
     protected String userName;
 
     protected String password;

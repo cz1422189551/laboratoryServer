@@ -32,8 +32,12 @@ public class AppointmentController {
     @Autowired
     UserServiceImpl service;
 
-    @Autowired
-    LaboratoryServiceImpl laboratoryService;
+
+    @RequestMapping("/getAll")
+    public ResponseEntity getAll() {
+        List<Appointment> all = appointmentService.getAll();
+        return EntityFactory.createResponse(all);
+    }
 
 
     @RequestMapping(value = "/available")
@@ -84,7 +88,7 @@ public class AppointmentController {
         Page list = null;
         if (laboratoryName == null || "".equals(laboratoryName)) {
             map.put("state", APPOINTING + "");
-            list = laboratoryService.getList(
+            list = appointmentService.getList(
                     AppointmentSpecification.findByDate(DateUtil.stringToDate(date)), pageNum, pageSize);
         } else {
             Specification byNameAndDate = AppointmentSpecification.findByNameAndDate(laboratoryName, DateUtil.stringToDate(date));

@@ -48,7 +48,7 @@ public abstract class BaseServiceImpl<T> implements IService<T> {
     @Transactional
     @Override
     public T insert(T t) {
-        return repository.save(t);
+        return repository.saveAndFlush(t);
     }
 
     @Transactional
