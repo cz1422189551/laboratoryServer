@@ -66,6 +66,11 @@ public class DateUtil {
         return sdf2.parse(dateStr);
     }
 
+    //字符串转Date
+    public static String DateToStr(Date date) throws ParseException {
+        return sdf2.format(date);
+    }
+
     //加上分钟
     public static LocalDateTime plus(Date date, int minute) {
         return dateToLocalDateTime(date).plusMinutes(minute);

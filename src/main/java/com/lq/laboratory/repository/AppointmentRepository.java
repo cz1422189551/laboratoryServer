@@ -11,7 +11,18 @@ import java.util.Map;
 
 
 public interface AppointmentRepository extends BaseRepository<Appointment, Integer> {
-    
+
+
+    @Query(nativeQuery = true,
+            value = "select (appointment_date) as 'startDatePoint',avg(`minute`)as 'avgMinute',sum(`minute`) as'sumMinute'\n" +
+                    ",sum(seat_count) as 'sumSeatCount',count(1)state\n" +
+                    "from appointment_info_view\n" +
+                    "where year(date)=2018 and available_type=1\n" +
+                    "GROUP BY appointment_date,seat_count\n" +
+                    "having state>=1"
+    )
+    Map<String, Object> findAppointmentDateUsingByYear();
+
     @Query(nativeQuery = true,
             value = "select year(ap.appointment_date) as 'year',MONTH(ap.appointment_date) as 'month',count(id) as 'count'\n" +
                     "from appointment ap where year(date)=:queryYear\n" +

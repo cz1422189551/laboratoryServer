@@ -3,11 +3,8 @@ package com.lq.laboratory;
 import com.lq.laboratory.entity.Appointment;
 import com.lq.laboratory.entity.User;
 import com.lq.laboratory.repository.AppointmentRepository;
-import com.lq.laboratory.repository.specifi.StatisticsSpecification;
-import com.lq.laboratory.services.AppointmentServiceImpl;
+import com.lq.laboratory.repository.StatisticService;
 import com.lq.laboratory.services.UserServiceImpl;
-import com.lq.laboratory.util.DateUtil;
-import com.lq.laboratory.util.EntityFactory;
 import com.lq.laboratory.util.JsonUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sql.DataSource;
-import java.math.BigInteger;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.lq.laboratory.util.Const.STUDENT;
+import static com.lq.laboratory.util.ParamUtil.createMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,6 +29,16 @@ public class LaboratoryApplicationTests {
     @Autowired
     AppointmentRepository appointmentRepository;
 
+    @Autowired
+    StatisticService statisticRepository;
+
+
+    @Test
+    public void testStatisticImpl() {
+
+        List<Appointment> list = statisticRepository.findDatePointUsingByDate(createMap(2018, 12, 25), STUDENT);
+    }
+
 
     @Test
     public void test() throws ParseException {
@@ -45,7 +48,6 @@ public class LaboratoryApplicationTests {
         int month = allMonthCountByYear.get("month").intValue();
         int count = allMonthCountByYear.get("count").intValue();
     }
-
 
 
     @Test

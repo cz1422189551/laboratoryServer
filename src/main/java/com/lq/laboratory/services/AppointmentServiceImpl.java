@@ -54,7 +54,7 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
     @Transactional
     public int updateUsingToFinish(Date date, Date currentDate) {
         return appointmentRepository.updateAppointStateToFinsh(
-                USING, date, currentDate, APPOINTING
+                FINISH, date, currentDate, APPOINTING
         );
     }
 
