@@ -65,23 +65,24 @@
     });
 
     const scale = {
-        count: {
-            type: 'linear',
-            nice:true,
-            // minLimit
-            // min: 2, // 定义数值范围的最小值
-            // max: 50,// 定义数值范围的最大值
-            alias: '数量' // 为属性定义别名
+        sales: {
+            min:0, // 定义数值范围的最小值
+            max:100, // 定义数值范围的最大值
+            ticks:[100, 1000, 2000, 3000], // 用于指定坐标轴上刻度点的文本信息（label），当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。
+            tickInterval: 1000, // 用于指定坐标轴各个标度点的间距，是原始数据之间的间距差值，tickCount 和 tickInterval 不可以同时声明。
+            month: {
+                alias: '月份' // 为属性定义别名
+            },
+            count: {
+                alias: '数量' // 为属性定义别名
+            }
         },
-        month: {
-            alias: '月份' // 为属性定义别名
-        }
+
     }
-
-
-    const label = {
+    const label={
+        textAlign:'center',
         formatter(text, item, index) {
-            return text = text + "月"
+            return text=text+"月"
         }
         // htmlTemplate(text, item, index) {
         //     return text=text+"月";
@@ -89,13 +90,15 @@
     }
 
 
+
     // 渲染图表
     ReactDOM.render((
         <Chart renderer={'canvas'} padding={'auto'} data={datSet} scale={scale} forceFit={false}>
             <Axis name="month" label={label} title/>
             <Axis name="count" title/>
-            <Tooltip crosshairs={{type: 'y'}}/>
-            <Legend position="top"/>
+
+            <Legend position="top" dy={-20}/>
+            <Tooltip/>
             <Geom type="interval" position="month*count" color="month"/>
         </Chart>
     ), document.getElementById('mountNode'));
