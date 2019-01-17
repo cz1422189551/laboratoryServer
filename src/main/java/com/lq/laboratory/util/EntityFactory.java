@@ -7,7 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -43,7 +45,15 @@ public class EntityFactory {
 
     //创建正常的响应实体
     public static <T> ResponseEntity<T> createResponse(T t) {
-        return new ResponseEntity<>(SUCCESS, "success", t);
+        return new ResponseEntity<>(SUCCESS, "SUCCESS", t);
+    }
+
+
+
+    public static <T> Map<String, Object> getMap(T t, String key) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(key,t);
+        return map;
     }
 
     public static <T> ResponseEntity<T> createResponse(T t, String msg) {

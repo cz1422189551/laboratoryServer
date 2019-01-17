@@ -11,6 +11,7 @@ import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,13 @@ public class AppointmentController {
     public ResponseEntity getAll() {
         List<Appointment> all = appointmentService.getAll();
         return EntityFactory.createResponse(all);
+    }
+
+    @RequestMapping("/getById")
+    public ResponseEntity getById(@RequestParam Map<String, String> map) {
+        String id = map.get("id");
+        Appointment one = appointmentService.getOne(id);
+        return EntityFactory.createResponse(one);
     }
 
 
@@ -67,6 +75,16 @@ public class AppointmentController {
         return EntityFactory.createResponse(insert);
     }
 
+    @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
+    public ResponseEntity updateAppointment(@RequestBody Appointment appointment) throws ParseException {
+
+        Date startDate = appointment.getAppointmentDate();
+        appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));
+        Appointment modify = appointmentService.modify(appointment);
+        return EntityFactory.createResponse(modify);
+    }
+
+
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public Result getList(@RequestParam Map<String, String> map) throws ParseException {
         int pageNum = FormatUtil.getPageAfterRemove(map, "pageNum");
@@ -74,6 +92,29 @@ public class AppointmentController {
         Page page = appointmentService.getList(AppointmentSpecification.<Appointment>getListByUserName(map.get("userId")), pageNum, pageSize);
         Result result = EntityFactory.createResult(page);
         return result;
+    }
+
+    @RequestMapping(value = "/admin/getList", method = RequestMethod.GET)
+    public ResponseEntity adminGetList(@RequestParam Map<String, String> map) throws ParseException {
+        int pageNum = FormatUtil.getPageAfterRemove(map, "pageNum");
+        int pageSize = FormatUtil.getPageAfterRemove(map, "pageSize");
+        Page page = appointmentService.getList(BaseSpecification.<Appointment>findByAnd(map), pageNum, pageSize);
+        Result result = EntityFactory.createResult(page);
+        return EntityFactory.createResponse(result);
+    }
+
+
+    @RequestMapping(value = "/admin/getList/search", method = RequestMethod.POST)
+    public ResponseEntity search(@RequestBody Map<String, Object> map) throws ParseException {
+        int pageNum = (int) map.get("pageNum");
+        int pageSize = (int) map.get("pageSize");
+//        Page page = appointmentService.getList(BaseSpecification.<Appointment>findByAnd(map), pageNum, pageSize);
+
+        Page<Appointment> page = appointmentService.getList(
+                AppointmentSpecification.findByPredicate((Map<String, Object>) map.get("map")), pageNum, pageSize
+        );
+        Result result = EntityFactory.createResult(page);
+        return EntityFactory.createResponse(result);
     }
 
 
@@ -103,8 +144,26 @@ public class AppointmentController {
     public ResponseEntity cancel(@RequestParam Map<String, String> map) {
         String json = map.get("myAppointment");
         Appointment appointment = (Appointment) JsonUtils.fromJson(json, Appointment.class);
+        return doCancel(appointment);
+    }
+
+    //取消预约，将enable至为0
+    @RequestMapping(value = "admin/cancel", method = RequestMethod.POST)
+    public ResponseEntity adminCancel(@RequestBody Appointment appointment) {
+        return doCancel(appointment);
+    }
+
+    private ResponseEntity doCancel(Appointment appointment) {
         appointment.setState(Const.CANCEL);
         return EntityFactory.createResponse(appointmentService.update(appointment));
     }
+
+
+    @RequestMapping(value = "/admin/delete", method = RequestMethod.POST)
+    public ResponseEntity delete(@RequestBody Map<String, String> map) {
+        String id = map.get("id");
+        return EntityFactory.createResponse(appointmentService.delete(id));
+    }
+
 
 }

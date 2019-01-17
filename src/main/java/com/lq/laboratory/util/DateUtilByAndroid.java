@@ -2,18 +2,17 @@ package com.lq.laboratory.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DateUtils {
-    static String TAG = DateUtil.class.getSimpleName();
+public class DateUtilByAndroid {
+    static String TAG = DateUtilByAndroid.class.getSimpleName();
     static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd ");
-    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:mm");
-    static SimpleDateFormat sdf3 = new SimpleDateFormat("MM-dd H:mm");
-    static SimpleDateFormat sdf4 = new SimpleDateFormat("H:mm");
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    static SimpleDateFormat sdf3 = new SimpleDateFormat("MM-dd HH:mm");
+    static SimpleDateFormat sdf4 = new SimpleDateFormat("HH:mm");
 
     //默认时间
     static int baseTime = 30;
@@ -61,7 +60,68 @@ public class DateUtils {
         }
     }
 
+    //初始化可用的时间
+    public static List<String> initAvailableTime() {
+        return stringList;
+    }
 
+    private static final String closeTimeStr = "17:00";
+    private static final String openTimeStr = "8:00";
+
+    //当前日期可用时间
+    public static List<String> currentAvailableTime(Date currentDate, String dateStr) {
+        String dateTimeStr = dateStr + closeTimeStr;
+        try {
+            Date closeDate = DateUtilByAndroid.stringToDateWithTime(dateTimeStr);
+            long minute = ((closeDate.getTime() - currentDate.getTime()) / 1000) / 60;
+            String s = DateUtilByAndroid.DateToStringOnlyHourMinute(currentDate);
+            String[] split = s.split(":");
+            //控制开始时间startTime
+            int startTime = (Integer.valueOf(split[0]));
+            startTime = startTime * baseTime * 2;
+            int startMinute = (Integer.valueOf(split[1]) % baseTime);
+            //控制结束时间count
+            int count = (int) (minute / baseTime);
+            int tmp = (int) (minute % baseTime);
+            if (tmp >= baseTime / 2) {
+                count++;
+            } else if (tmp != 0) {
+                count--;
+            }
+
+            int startValue = (startMinute % baseTime);
+            if (startValue > (baseTime / 2)) {
+                startTime = startTime + baseTime *3;
+            } else  {
+                startTime = startTime + baseTime;
+            }
+
+            List<Integer> tmpList = new ArrayList<>();
+
+            for (int i = 0; i < count; i++) {
+                int value = startTime + (baseTime * i);
+                int rest = value / (baseTime) / 2;
+                if (rest < 8 || rest == 12 || rest == 13 || rest == 14) continue;
+                tmpList.add(value);
+            }
+
+            List<String> currentTimeList = new ArrayList<>();
+
+            for (Integer integer : tmpList) {
+                int value = integer / baseTime / 2;
+                if (integer / baseTime % 2 != 0) {
+                    currentTimeList.add(value + ":" + "30");
+                } else {
+                    currentTimeList.add(value + ":" + "00");
+                }
+            }
+            return currentTimeList;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
 
 
     public static Date longTimeToDate(long time) {

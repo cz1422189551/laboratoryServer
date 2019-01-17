@@ -15,6 +15,10 @@ public class Const {
 
     public static final int CANCEL = -1;
 
-    public static final int SEAT_COUNT=20;
+    public static final int SEAT_COUNT = 20;
 
+    //修改
+    public static final int MODIFY = 1;
+    //新增
+    public static final int INSERT = 0;
 }

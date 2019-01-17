@@ -53,7 +53,7 @@ public class Laboratory extends BaseEntity {
     private int seatCount;
 
 
-    //学生是否可用 1可用 ， 0不可用
+    //学生是否可用 1可用 ， 2不可用
     private int availableType = 1;
 
     //是否启用

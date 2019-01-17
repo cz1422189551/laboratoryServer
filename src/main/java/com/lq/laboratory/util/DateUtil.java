@@ -30,6 +30,16 @@ public class DateUtil {
         return LocalDateTime.ofInstant(instant, zoneId);
     }
 
+    //Date转LocalDate
+    public static LocalDate dateToLocalDate(Date date) {
+
+        Instant instant = date.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+
+        // atZone()方法返回在指定时区从此Instant生成的ZonedDateTime。
+        return instant.atZone(zoneId).toLocalDate();
+    }
+
     //Date转字符串
     public static String DateToString(Date date) {
         return sdf.format(date);

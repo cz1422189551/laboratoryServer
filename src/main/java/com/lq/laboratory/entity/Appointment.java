@@ -1,5 +1,6 @@
 package com.lq.laboratory.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,16 +27,20 @@ public class Appointment extends BaseEntity {
     private Laboratory laboratory;
 
     //创建时间
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
 
     //预约的时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date appointmentDate;
 
     //结束时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date endDate;
 
     //日期
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date date;
 
     //分钟

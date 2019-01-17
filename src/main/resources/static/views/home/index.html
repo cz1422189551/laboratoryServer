@@ -11,6 +11,7 @@
 </head>
 <body>
 <div id="mountNode"></div>
+<div id="mountNode2"></div>
 <script type="text/babel">
     const {Chart, Geom, Axis, Tooltip, Coord, Label, Legend, View, Guide, Shape} = window.BizCharts;
 
@@ -83,9 +84,6 @@
         formatter(text, item, index) {
             return text = text + "月"
         }
-        // htmlTemplate(text, item, index) {
-        //     return text=text+"月";
-        // }
     }
 
 
@@ -99,6 +97,16 @@
             <Geom type="interval" position="month*count" color="month"/>
         </Chart>
     ), document.getElementById('mountNode'));
+    // 渲染图表
+    ReactDOM.render((
+        <Chart renderer={'canvas'} padding={'auto'} data={datSet} scale={scale} forceFit={false}>
+            <Axis name="month" label={label} title/>
+            <Axis name="count" title/>
+            <Tooltip crosshairs={{type: 'y'}}/>
+            <Legend position="top"/>
+            <Geom type="interval" position="month*count" color="month"/>
+        </Chart>
+    ), document.getElementById('mountNode2'));
 </script>
 </body>
 </html>

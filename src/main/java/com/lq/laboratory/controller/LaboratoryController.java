@@ -129,7 +129,6 @@ public class LaboratoryController {
     }
 
 
-
     //查看一个实验室包含座位的信息
     @RequestMapping(value = "/type/getAll")
     public List<LaboratoryType> queryAll(@RequestParam Map<String, String> map) {
@@ -153,6 +152,39 @@ public class LaboratoryController {
 
         return all;
     }
+
+    @RequestMapping(value = "/admin/type/getAll")
+    public ResponseEntity adminQueryAll(@RequestParam Map<String, String> map) {
+        return EntityFactory.createResponse(queryAll(map));
+    }
+
+    @RequestMapping(value = "/admin/type/cascade")
+    public List<Map<String, Object>> adminQueryCascade() {
+        List<LaboratoryType> all = laboratoryTypeService.getAll();
+        List<Map<String, Object>> result = new ArrayList<>();
+        all.stream().forEach(
+                l -> {
+                    String label = l.getName();
+                    int value = l.getId();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("label", label);
+                    map.put("value", value);
+                    List<Map<String, Object>> childrenList = l.getLaboratoryList().stream().map(lb -> {
+                        Map<String, Object> childrenMap = new HashMap<>();
+                        childrenMap.put("label", lb.getName());
+                        childrenMap.put("value", lb.getId());
+                        childrenMap.put("available", lb.getAvailableType());
+                        childrenMap.put("seatCount", lb.getSeatCount());
+                        childrenMap.put("children", null);
+                        return childrenMap;
+                    }).collect(Collectors.toList());
+                    map.put("children", childrenList);
+                    result.add(map);
+                }
+        );
+        return result;
+    }
+
 
 //    //查看一个实验室包含座位的信息
 //    @RequestMapping(value = "/type/getAll")

@@ -1,7 +1,9 @@
 package com.lq.laboratory.repository;
 
 import com.lq.laboratory.entity.Appointment;
+import com.lq.laboratory.util.DateUtil;
 import com.lq.laboratory.util.FormatUtil;
+import com.sun.org.glassfish.external.statistics.Statistic;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 import static com.lq.laboratory.util.Const.APPOINTING;
 import static com.lq.laboratory.util.Const.STUDENT;
@@ -30,6 +30,25 @@ public class StatisticService {
 
     @PersistenceContext
     EntityManager entityManager;
+
+    @Autowired
+    AppointmentRepository appointmentRepository;
+
+
+    public Map<String, Integer> findCount() {
+        int sumCount = appointmentRepository.sumCount();
+        LocalDate date = LocalDate.now();
+        Date currentDate = DateUtil.localDateToDate(date);
+        int appointingCount = appointmentRepository.appointingCount(currentDate);
+        int currentDayCount = appointmentRepository.currentDayCount(currentDate);
+        int currentDayCancelCount = appointmentRepository.currentDayCancelCount(currentDate);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("sumCount", sumCount);
+        map.put("appointingCount", appointingCount);
+        map.put("currentDayCount", currentDayCount);
+        map.put("currentDayCancelCount", currentDayCancelCount);
+        return map;
+    }
 
 
     public List findEveryMonthCountByYear(Map<String, String> dateMap) {
@@ -95,11 +114,13 @@ public class StatisticService {
      * 执行原生的SQL
      *
      * @param sql 原生sql
-     * @return List<Map   <   String   ,   Object>
+     * @return List<Map                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Object>
      */
     private List executeNativeSql(String sql) {
         Query nativeQuery = entityManager.createNativeQuery(sql);
         nativeQuery.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         return nativeQuery.getResultList();
     }
+
+
 }

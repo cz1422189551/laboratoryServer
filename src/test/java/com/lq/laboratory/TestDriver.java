@@ -1,11 +1,9 @@
 package com.lq.laboratory;
 
-import com.lq.laboratory.util.DateUtil;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.time.LocalDate;
 
 public class TestDriver {

@@ -38,6 +38,11 @@ public class LaboratoryApplicationTests {
 
         List<Appointment> list = statisticRepository.findDatePointUsingByDate(createMap(2018, 12, 25), STUDENT);
     }
+    
+    @Test
+    public void testS(){
+        Map<String, Integer> count = statisticRepository.findCount();
+    }
 
 
     @Test

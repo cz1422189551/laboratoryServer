@@ -43,4 +43,16 @@ public interface AppointmentRepository extends BaseRepository<Appointment, Integ
             , @Param("currentDate") Date currentDate, @Param("used") int used);
 
 
+    @Query(nativeQuery = true, value = "select count(ap.id) as 'sumCount' from appointment ap where ap.state>0 ")
+    int sumCount();
+
+    @Query(nativeQuery = true, value = "select count(ap.id) as 'appointingCount' from appointment ap where ap.state>0 AND ap.date>=:currentDate")
+    int appointingCount(@Param("currentDate") Date currentDate);
+
+    @Query(nativeQuery = true, value = "select count(ap.id) as 'currentDayCount' from appointment ap where ap.state>0 AND ap.date=:currentDate ")
+    int currentDayCount(@Param("currentDate") Date currentDate);
+
+    @Query(nativeQuery = true, value = "select count(ap.id) as 'currentDayCancelCount' from appointment ap where ap.state=-1 AND ap.date=:currentDate ")
+    int currentDayCancelCount(@Param("currentDate") Date currentDate);
+
 }

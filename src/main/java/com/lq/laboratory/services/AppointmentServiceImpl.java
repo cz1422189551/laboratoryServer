@@ -68,13 +68,33 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
             //判断时间冲突
             if (!validateTimeConflict(appointment, user)
                     && !validateDateTime(appointment.getAppointmentDate(), appointment.getEndDate())
-                    && !validateAvailDateSeat(appointment, user))
+                    && !validateAvailDateSeat(appointment, user, INSERT))
                 return super.insert(appointment);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    @Transactional
+    public Appointment modify(Appointment appointment) throws ParseException {
+
+
+        User user = appointment.getUser();
+        //判断时间冲突
+        Appointment one = getOne(appointment.getId() + "");
+        if (one == null) throw new AppointmentException("该预约已被删除");
+        if (one.getState() != 1) throw new AppointmentException("该预约已不可修改");
+        if (!validateTimeConflictUpdate(appointment, user)
+                && !validateDateTime(appointment.getAppointmentDate(), appointment.getEndDate())
+                && !validateAvailDateSeat(appointment, user, MODIFY)) {
+            appointment.setState(APPOINTING);
+            return appointmentRepository.saveAndFlush(appointment);
+        }
+
+        return null;
+    }
+
 
     //检查时间是否失效
     private boolean validateDateTime(Date startDate, Date endDate) {
@@ -88,6 +108,7 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
     //检查是否预约冲突
     private boolean validateTimeConflict(Appointment appointment, User user) {
         try {
+
             List<Appointment> all = getAll(AppointmentSpecification.findConflictDate(user.getId() + "", appointment.getAppointmentDate(), appointment.getEndDate(), appointment.getDate()));
             if (all != null && all.size() > 0) throw new AppointmentException("已有约在身");
             return false;
@@ -97,6 +118,25 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
         return true;
     }
 
+    //修改时候：检查是否预约冲突
+    private boolean validateTimeConflictUpdate(Appointment appointment, User user) {
+
+
+        List<Appointment> all = null;
+        try {
+            all = getAll(AppointmentSpecification
+                    .findConflictDateUpdate(appointment.getId() + "", user.getId() + "", appointment.getAppointmentDate(), appointment.getEndDate(), appointment.getDate()));
+            if (all != null && all.size() > 0) throw new AppointmentException("和下一场预约时间冲突");
+            return false;
+//            throw new AppointmentException("先抛出异常");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return true;
+
+    }
+
+
     @Resource(name = "appointmentRepository")
     @Override
     public void setRepository(BaseRepository<Appointment, Integer> repository) {
@@ -105,7 +145,7 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
     }
 
     //判断想要预约的实验室可用数量， 可用则 返回false
-    private boolean validateAvailDateSeat(Appointment appointment, User user) throws ParseException {
+    private boolean validateAvailDateSeat(Appointment appointment, User user, int modify) throws ParseException {
         List<Appointment> all = getAll(AppointmentSpecification.findOccupationInfo(
                 appointment.getLaboratory().getId() + "", appointment.getAppointmentDate(),
                 appointment.getEndDate(), appointment.getDate()
@@ -118,12 +158,13 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
                 if (all.size() == SEAT_COUNT) throw new AppointmentException("学生实验室只能被学生预约 " + SEAT_COUNT + "个位置");
             }
             //判断是否已满
-            if (all.size() == appointment.getLaboratory().getSeatCount()) throw new AppointmentException("该时段位置已满");
+            if (all.size() == (appointment.getLaboratory().getSeatCount() + modify))
+                throw new AppointmentException("该时段位置已满");
             return false;
         } else { //教师实验室
             if (user.getUserType() != TEACHER)
                 throw new AppointmentException("非教职人员无法预约" + appointment.getLaboratory().getName());
-            if (all.size() > 0) throw new AppointmentException("该时段已被预约");
+            if (all.size() > modify) throw new AppointmentException("该时段已被预约");
             return false;
         }
     }
