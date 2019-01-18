@@ -5,9 +5,9 @@ import com.lq.laboratory.entity.User;
 import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.lq.laboratory.util.Const.ADMIN;
 
 @RestController
 public class LoginController {
@@ -22,8 +22,10 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/web/login", method = RequestMethod.POST)
-    public ResponseEntity webLogin(String userName, String password) {
-        return EntityFactory.createResponse(login(userName, password));
+    public ResponseEntity webLogin(@RequestBody User user) {
+        User login = login(user.getUserName(), user.getPassword());
+        if (login == null || login.getUserType() != ADMIN) throw new RuntimeException("管理员账号或密码错误");
+        return EntityFactory.createResponse(login);
     }
 
     private User login(String userName, String password) {

@@ -48,11 +48,12 @@ public class UserServiceImpl extends UserService {
 //        User byUserName = userRepository.findByUserName(user.getUserName());
 //        if (byUserName != null && !"".equals(byUserName.getUserName())) throw new UserExpcetion("该账号已被注册");
         try {
-            if (user.getUserType() == STUDENT) {
-                res = studentService.insert((Student) user);
-            } else if (user.getUserType() == TEACHER) {
-                res = teacherService.insert((Teacher) user);
-            }
+            res = userRepository.saveAndFlush(user);
+//            if (user.getUserType() == STUDENT) {
+//                res = studentService.insert((Student) user);
+//            } else if (user.getUserType() == TEACHER) {
+//                res = teacherService.insert((Teacher) user);
+//            }
         } catch (RuntimeException e) {
             throw new UserExpcetion("账号已被注册");
         }
@@ -60,15 +61,15 @@ public class UserServiceImpl extends UserService {
         return res;
     }
 
-    @Transactional
-    @Override
-    public int update(User user) {
-        if (user == null || user.getId() == 0) throw new RuntimeException("更新对象为null");
-
-        return user.getUserType() == STUDENT
-                ? studentService.update((Student) user)
-                : teacherService.update((Teacher) user);
-    }
+//    @Transactional
+//    @Override
+//    public int update(User user) {
+//        if (user == null || user.getId() == 0) throw new RuntimeException("更新对象为null");
+//
+//        return user.getUserType() == STUDENT
+//                ? studentService.update((Student) user)
+//                : teacherService.update((Teacher) user);
+//    }
 
 //    @Transactional
 //    @Override
@@ -91,9 +92,9 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public User getOne(String id) {
-        User user = null;
-        user = teacherService.getOne(id) != null ? teacherService.getOne(id) : studentService.getOne(id);
-        return user;
+//        User user = null;
+//        user = teacherService.getOne(id) != null ? teacherService.getOne(id) : studentService.getOne(id);
+        return userRepository.getOne(Integer.valueOf(id));
     }
 
 

@@ -3,6 +3,7 @@ package com.lq.laboratory.controller;
 
 import com.lq.laboratory.entity.*;
 import com.lq.laboratory.exception.UserExpcetion;
+import com.lq.laboratory.repository.specifi.AppointmentSpecification;
 import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.services.base.UserService;
@@ -11,13 +12,17 @@ import com.lq.laboratory.util.FormatUtil;
 import com.lq.laboratory.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.lq.laboratory.util.Const.STUDENT;
@@ -59,6 +64,17 @@ public class UserController {
         return EntityFactory.createResponse(list);
     }
 
+    @RequestMapping(value = "/admin/getList/search", method = RequestMethod.POST)
+    public ResponseEntity search(@RequestBody Map<String, Object> map) throws ParseException {
+        int pageNum = (int) map.get("pageNum");
+        int pageSize = (int) map.get("pageSize");
+        Page<User> page = userService.getList(
+                UserSpecification.findByPredicate((Map<String, Object>) map.get("map")), pageNum, pageSize
+        );
+        Result result = EntityFactory.createResult(page);
+        return EntityFactory.createResponse(result);
+    }
+
     @RequestMapping("/getList")
     public ResponseEntity getList(@RequestParam Map<String, String> map) {
         int pageNum = FormatUtil.getPageAfterRemove(map, "pageNum");
@@ -68,27 +84,56 @@ public class UserController {
         return EntityFactory.createResponse(EntityFactory.createResult(page));
     }
 
+    //获取非学生的用户
+    @RequestMapping("/admin")
+    public ResponseEntity getList() {
+        List<User> userType = userService.getAll((root, query, cb) -> cb.notEqual(root.get("userType"), STUDENT));
+        return EntityFactory.createResponse(userType);
+    }
+
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity add(String fsFormData) {
         User u = (User) JsonUtils.fromJson(fsFormData, User.class);
-//        for (int i = 0; i < 50; i++) {
-//            User u = new Student(i + 1, "admin" + (i + 1), "admin" + (i + 1), "狮子吃咸鱼" + i, "18807772672", 1 % 2, STUDENT, new Date(), "广州", "计科本", "电信学院");
-//            EntityFactory.createResponse(userService.insert(u));
-//        }
         return EntityFactory.createResponse(userService.insert(u));
 
+    }
+
+    @RequestMapping(value = "/admin/add", method = RequestMethod.POST)
+    public ResponseEntity adminAdd(@RequestBody User user) throws UnsupportedEncodingException {
+        if (user == null || !vailDateStr(user)) throw new UserExpcetion("完善信息");
+        return EntityFactory.createResponse(userService.insert(user));
+    }
+
+    private boolean vailDateStr(User user) {
+        return (!StringUtils.isEmpty(user.getUserName())
+                && !StringUtils.isEmpty(user.getPassword())
+                && !StringUtils.isEmpty(user.getName())
+                && !StringUtils.isEmpty(user.getTel()));
     }
 
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity update(String fsFormData) throws UnsupportedEncodingException {
-//        String tmp = URLDecoder.decode(fsFormData, "UTF-8");
         User u = (User) JsonUtils.fromJson(fsFormData, User.class);
-//        User user1 = new Student(99, "admin", "admin", "测试", "13197670831", true, STUDENT, new Date(), "钦州", "毕业", "研发部");
         return EntityFactory.createResponse(userService.update(u));
     }
 
+    @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
+    public ResponseEntity adminUpdate(@RequestBody User user) throws UnsupportedEncodingException {
+//        User u = (User) JsonUtils.fromJson(fsFormData, User.class);
+        User user1 = userService.updateEntity(user);
+        return EntityFactory.createResponse(user1);
+    }
+
+    @RequestMapping(value = "/admin/delete", method = RequestMethod.POST)
+    public ResponseEntity delete(@RequestBody Map<String, String> map) {
+        String id = map.get("id");
+        return EntityFactory.createResponse(userService.delete(id));
+    }
+
+
+    //app更新
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity save(@RequestParam Map<String, String> map) {
         User u = getUserByUserType(map);
@@ -97,21 +142,13 @@ public class UserController {
         throw new UserExpcetion("保存失败");
     }
 
-
+    //app注册
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestParam Map<String, String> map) {
         User u = getUserByUserType(map);
         User user = userService.insert(u);
 
         return EntityFactory.createResponse(user, "注册成功");
-
-    }
-
-    @RequestMapping(value = "/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") String id) {
-        userService.delete(id);
-
-        return null;
 
     }
 

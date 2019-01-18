@@ -4,6 +4,8 @@ import com.lq.laboratory.entity.*;
 
 import com.lq.laboratory.repository.specifi.AppointmentSpecification;
 import com.lq.laboratory.repository.specifi.BaseSpecification;
+import com.lq.laboratory.repository.specifi.LaboratorySpecification;
+import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.*;
 import com.lq.laboratory.util.DateUtil;
 import com.lq.laboratory.util.EntityFactory;
@@ -12,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,85 +42,78 @@ public class LaboratoryController {
     LaboratoryTypeServiceImpl laboratoryTypeService;
 
 
-    @RequestMapping(value = "/type/delete/{id}")
-    public ResponseEntity deleteType(@PathVariable("id") String id) {
-        boolean delete = laboratoryTypeService.delete(id);
-        return null;
+    //类别删除
+    @RequestMapping(value = "/type/admin/delete", method = RequestMethod.POST)
+    public ResponseEntity delete(@RequestBody Map<String, String> map) {
+        String id = map.get("id");
+        return EntityFactory.createResponse(laboratoryTypeService.delete(id));
     }
 
-    @RequestMapping(value = "/type/add")
-    public ResponseEntity addType() {
-        LaboratoryType laboratoryType = new LaboratoryType("物理", null);
-        laboratoryTypeService.insert(laboratoryType);
-        return null;
+    //类别新增
+    @RequestMapping(value = "/type/admin/add")
+    public ResponseEntity addType(@RequestBody LaboratoryType laboratoryType) {
+        if (laboratoryType == null || StringUtils.isEmpty(laboratoryType.getName()))
+            throw new RuntimeException("名称不能为null");
+        LaboratoryType insert = laboratoryTypeService.insert(laboratoryType);
+        return EntityFactory.createResponse(insert);
     }
 
+    //类别更新
+    @RequestMapping(value = "/type/admin/update", method = RequestMethod.POST)
+    public ResponseEntity adminUpdate(@RequestBody LaboratoryType laboratoryType) throws UnsupportedEncodingException {
+        LaboratoryType type = laboratoryTypeService.updateEntity(laboratoryType);
+        return EntityFactory.createResponse(type);
+    }
 
-    @RequestMapping(value = "/add")
-    public ResponseEntity add(Laboratory laboratory) {
+    //类别查询
+    @RequestMapping(value = "/type/admin/getList/search", method = RequestMethod.POST)
+    public ResponseEntity searchType(@RequestBody Map<String, Object> map) throws ParseException {
+        int pageNum = (int) map.get("pageNum");
+        int pageSize = (int) map.get("pageSize");
+        Page<LaboratoryType> page = laboratoryTypeService.getList(
+                LaboratorySpecification.findByPredicate((Map<String, Object>) map.get("map")), pageNum, pageSize
+        );
+        Result result = EntityFactory.createResult(page);
+        return EntityFactory.createResponse(result);
+    }
 
-        laboratory.setUser(userService.getOne(1 + ""));
-        laboratory.setCloseDate(new Date());
+    //实验室查询
+    @RequestMapping(value = "/admin/getList/search", method = RequestMethod.POST)
+    public ResponseEntity searchLaboratory(@RequestBody Map<String, Object> map) throws ParseException {
+        int pageNum = (int) map.get("pageNum");
+        int pageSize = (int) map.get("pageSize");
+        Page<Laboratory> page = laboratoryService.getList(
+                LaboratorySpecification.findByPredicateLaboratory((Map<String, Object>) map.get("map")), pageNum, pageSize
+        );
+        Result result = EntityFactory.createResult(page);
+        return EntityFactory.createResponse(result);
+    }
+
+    //实验室新增
+    @RequestMapping(value = "/admin/add")
+    public ResponseEntity add(@RequestBody Laboratory laboratory) {
+        if (laboratory == null || laboratory.getSeatCount() < 1) throw new RuntimeException("检查新增实验室信息");
         laboratory.setOpenDate(new Date());
-        laboratory.setRow(5);
-        laboratory.setCol(5);
-        laboratory.setEnable(true);
-        laboratory.setName("物理实验室1号");
-        LaboratoryType laboratoryType = new LaboratoryType();
-        laboratoryType.setId(1);
-        laboratoryType.setName("物理");
-        List<Laboratory> laboratoryList = new ArrayList<>();
-        laboratoryList.add(laboratory);
-        laboratoryType.setLaboratoryList(laboratoryList);
-
-//        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(5, 5));
-//
-//        laboratory.setSeatList(seatList);
-
-        return EntityFactory.createResponse(laboratoryTypeService.insert(laboratoryType));
+        Laboratory insert = laboratoryService.insert(laboratory);
+        return EntityFactory.createResponse(insert);
     }
 
-    //更新实验室信息
-    @RequestMapping(value = "/update")
-    public ResponseEntity updateInfo(Laboratory laboratory) {
-
-        laboratory.setUser(userService.getOne(1 + ""));
-        laboratory.setCloseDate(new Date());
+    //更新实验室
+    @RequestMapping(value = "/admin/update")
+    public ResponseEntity updateInfo(@RequestBody Laboratory laboratory) {
+        if (laboratory == null || laboratory.getSeatCount() < 1) throw new RuntimeException("检查提交的实验室信息");
         laboratory.setOpenDate(new Date());
-        laboratory.setRow(5);
-        laboratory.setCol(5);
-        laboratory.setEnable(true);
-        laboratory.setId(2);
-        laboratory.setName("实验室" + laboratory.getId());
-        LaboratoryType type = new LaboratoryType();
-        type.setId(2);
-        laboratory.setLaboratoryType(type);
-//        List<Seat> seatList = seatService.getAll(SeatSpecification.getSeatList(laboratory.getRow(), laboratory.getCol()));
-
-//        laboratory.setSeatList(seatList);
-
-        return EntityFactory.createResponse(laboratoryService.update(laboratory));
+        int update = laboratoryService.update(laboratory);
+        return EntityFactory.createResponse(update);
     }
 
+    //实验室删除
+    @RequestMapping(value = "/admin/delete", method = RequestMethod.POST)
+    public ResponseEntity deleteLab(@RequestBody Map<String, String> map) {
+        String id = map.get("id");
+        return EntityFactory.createResponse(laboratoryService.delete(id));
+    }
 
-//    @RequestMapping(value = "/seat/update", method = RequestMethod.POST)
-//    public ResponseEntity update(Laboratory laboratory) {
-//
-//        Map<Laboratory, List<LaboratorySeat>> collect = new HashMap<>();
-//
-//
-//        return EntityFactory.createResponse(laboratoryService.insert(laboratory));
-//    }
-
-//    //查看一个实验室包含座位的信息
-//    @RequestMapping(value = "/seat/one/{id}", method = RequestMethod.GET)
-//    public Map getLaboratorySeat(@PathVariable("id") String id) {
-//
-//        List<LaboratorySeat> list = laboratorySeatService.getAll(LaboratorySeatSpecification.findBySeatIdAndLaboratoryId(Integer.valueOf(id)));
-//        Map<Laboratory, List<LaboratorySeat>> collect = new HashMap<>();
-//        collect.put(list.get(0).getLaboratory(), list);
-//        return collect;
-//    }
 
     //查看一个实验室包含座位的信息
     @RequestMapping(value = "/getList")
@@ -184,22 +181,6 @@ public class LaboratoryController {
         );
         return result;
     }
-
-
-//    //查看一个实验室包含座位的信息
-//    @RequestMapping(value = "/type/getAll")
-//    public List<LaboratoryTypeEntity> queryAll() {
-//        List<LaboratoryType> all = laboratoryTypeService.getAll();
-//
-//        return EntityFactory.createLaboratoryTypeEntity(all, laboratorySeatService);
-//    }
-//
-//    @RequestMapping(value = "/type/id}")
-//    public LaboratoryTypeEntity queryAll(@PathVariable("id") String id) {
-//        LaboratoryType type = laboratoryTypeService.getOne(id);
-//
-//        return EntityFactory.createLaboratoryTypeEntity(type, laboratorySeatService);
-//    }
 
 
 }

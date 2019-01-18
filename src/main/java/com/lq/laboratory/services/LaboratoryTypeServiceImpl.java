@@ -16,4 +16,6 @@ public class LaboratoryTypeServiceImpl extends BaseServiceImpl<LaboratoryType> {
         super.setRepository(repository);
     }
 
+
+
 }

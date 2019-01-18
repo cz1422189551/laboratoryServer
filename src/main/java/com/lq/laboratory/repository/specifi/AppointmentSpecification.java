@@ -302,48 +302,8 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
             "or (appointment_date>='2018-12-19 09:00' and appointment_date<'2018-12-19 10:00' )\n" +
             ")";
 
-    private static List<Date> mapObjectToRangeDateTime(Map<String, Object> map, String key) {
-        if (map.get(key) != null) {
-            List<String> rangeDateTime = (List<String>) map.get(key);
-            if (rangeDateTime.size() < 2) return null;
-
-            String startDateStr = rangeDateTime.get(0);
-            String endDateStr = rangeDateTime.get(1);
-
-            Date startDate = dateStrToAddDate(startDateStr);
-            Date endDate = dateStrToAddDate(endDateStr);
-            return Arrays.asList(startDate, endDate);
-        } else {
-            return null;
-        }
-    }
 
 
-    private static Integer mapObjectToInteger(Map<String, Object> map, String key) {
-        if (map.get(key) != null) {
-            return (Integer) map.get(key);
-        } else {
-            return null;
-        }
-    }
 
-    private static Date mapObjectToDate(Map<String, Object> map, String key) {
-        if (map.get(key) != null) {
-            String dateStr = map.get(key) + "";
-            return dateStrToAddDate(dateStr);
-        }
-        return null;
-    }
-
-    private static Date dateStrToAddDate(String dateStr) {
-        Date date = null;
-        try {
-            date = DateUtil.stringToDate(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        LocalDate localDate = DateUtil.dateToLocalDate(date);
-        return DateUtil.localDateToDate(localDate.plusDays(1));
-    }
 
 }

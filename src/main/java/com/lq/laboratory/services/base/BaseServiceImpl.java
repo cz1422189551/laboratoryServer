@@ -21,7 +21,7 @@ public abstract class BaseServiceImpl<T> implements IService<T> {
     @Override
     public T updateEntity(T t) {
         BaseEntity entity = (BaseEntity) t;
-        T one = getOne(entity.getId() + "");
+        T one = getOne(String.valueOf(entity.getId()));
         if (one == null) return null;
         return repository.saveAndFlush(t);
     }

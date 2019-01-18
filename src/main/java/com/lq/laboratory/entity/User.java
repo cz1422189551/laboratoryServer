@@ -16,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.JOINED)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(uniqueConstraints = {@UniqueConstraint(name = "uni_user_name", columnNames = {"userName"})})
 public class User extends BaseEntity {
 
@@ -34,7 +35,6 @@ public class User extends BaseEntity {
         this.tel = tel;
         this.gender = gender;
         this.userType = userType;
-
     }
 
     @Column(length = 20)
@@ -49,6 +49,16 @@ public class User extends BaseEntity {
 
     //用户类别（学生，或教师）
     protected int userType;
+
+    //职称
+    protected String title;
+
+    private String address;
+
+    //班级
+    private String classGrade;
+
+    protected String department;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
