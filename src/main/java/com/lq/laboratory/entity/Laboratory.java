@@ -16,8 +16,7 @@ import java.util.List;
 @Entity
 public class Laboratory extends BaseEntity {
 
-    @ManyToOne
-
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     private String name;
@@ -71,7 +70,10 @@ public class Laboratory extends BaseEntity {
 
     private String address;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.REMOVE
+    )
     @JoinColumn
     @JsonIgnoreProperties(value = "laboratoryList")
     private LaboratoryType laboratoryType;

@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-//@Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(uniqueConstraints = {@UniqueConstraint(name = "uni_user_name", columnNames = {"userName"})})
 public class User extends BaseEntity {
@@ -60,7 +59,9 @@ public class User extends BaseEntity {
 
     protected String department;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(
+            cascade = CascadeType.ALL
+            , fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Comment> commentList;
 

@@ -34,7 +34,9 @@ public interface IService<T> {
 
     boolean delete(String id);
 
-    default Page<T> getList( Specification<T> specification, int pageNumber, int pageSize) {
+    void delete(T t);
+
+    default Page<T> getList(Specification<T> specification, int pageNumber, int pageSize) {
         return null;
     }
 

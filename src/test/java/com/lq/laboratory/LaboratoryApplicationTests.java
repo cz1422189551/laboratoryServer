@@ -1,9 +1,12 @@
 package com.lq.laboratory;
 
 import com.lq.laboratory.entity.Appointment;
+import com.lq.laboratory.entity.Laboratory;
 import com.lq.laboratory.entity.User;
 import com.lq.laboratory.repository.AppointmentRepository;
+import com.lq.laboratory.repository.LaboratoryRepository;
 import com.lq.laboratory.repository.StatisticService;
+import com.lq.laboratory.services.LaboratoryServiceImpl;
 import com.lq.laboratory.services.UserServiceImpl;
 import com.lq.laboratory.util.JsonUtils;
 import org.junit.Test;
@@ -32,15 +35,18 @@ public class LaboratoryApplicationTests {
     @Autowired
     StatisticService statisticRepository;
 
+    @Autowired
+    LaboratoryRepository laboratoryRepository;
+
 
     @Test
     public void testStatisticImpl() {
 
         List<Appointment> list = statisticRepository.findDatePointUsingByDate(createMap(2018, 12, 25), STUDENT);
     }
-    
+
     @Test
-    public void testS(){
+    public void testS() {
         Map<String, Integer> count = statisticRepository.findCount();
     }
 
@@ -63,8 +69,10 @@ public class LaboratoryApplicationTests {
 
     @Test
     public void testDelete() {
-        boolean delete = userService.delete(3 + "");
 
+        Laboratory one = laboratoryRepository.getOne(1);
+        String name = one.getName();
+        System.out.println(one);
     }
 
 }

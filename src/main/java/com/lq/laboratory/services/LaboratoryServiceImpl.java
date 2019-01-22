@@ -11,11 +11,15 @@ import javax.annotation.Resource;
 @Service
 public class LaboratoryServiceImpl extends BaseServiceImpl<Laboratory> {
 
+
     @Resource(name = "laboratoryRepository")
     @Override
     public void setRepository(BaseRepository<Laboratory, Integer> repository) {
         super.setRepository(repository);
     }
+
+
+
 
 //    @Transactional
 //    @Override

@@ -7,10 +7,13 @@ import com.lq.laboratory.util.EntityFactory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 
@@ -18,7 +21,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class BaseServiceImpl<T> implements IService<T> {
+
+    @Autowired
+    EntityManager entityManager;
+
+
     @Override
+
     public T updateEntity(T t) {
         BaseEntity entity = (BaseEntity) t;
         T one = getOne(String.valueOf(entity.getId()));
@@ -30,7 +39,9 @@ public abstract class BaseServiceImpl<T> implements IService<T> {
 
     @Override
     public T getOne(String id) {
-        return repository.findById(Integer.valueOf(id)).orElse(null);
+        T t = repository.findById(Integer.valueOf(id)).orElse(null);
+        if (t == null) throw new RuntimeException("没有找到" + id + "记录");
+        return t;
     }
 
     @Override
@@ -64,6 +75,14 @@ public abstract class BaseServiceImpl<T> implements IService<T> {
         return true;
     }
 
+
+    @Transactional
+    @Override
+    public void delete(T t) {
+        repository.delete(t);
+    }
+
+
     @Override
     public boolean clear() {
         return false;
@@ -78,4 +97,6 @@ public abstract class BaseServiceImpl<T> implements IService<T> {
     public List<T> getAll(Specification<T> specification) {
         return repository.findAll(specification);
     }
+
+
 }

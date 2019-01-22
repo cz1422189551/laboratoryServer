@@ -34,12 +34,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-//    @RequestMapping("/one/{id}")
-//    public ResponseEntity getOne(@PathVariable("id") String id) {
-//
-//        User user = userService.getOne(id);
-//        return EntityFactory.createResponse(user);
-//    }
 
     @RequestMapping("/one")
     public ResponseEntity getOne(@RequestParam(name = "funcId") String id) {

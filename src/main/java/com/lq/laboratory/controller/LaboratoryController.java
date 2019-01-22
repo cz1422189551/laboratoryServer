@@ -2,6 +2,7 @@ package com.lq.laboratory.controller;
 
 import com.lq.laboratory.entity.*;
 
+import com.lq.laboratory.repository.LaboratoryRepository;
 import com.lq.laboratory.repository.specifi.AppointmentSpecification;
 import com.lq.laboratory.repository.specifi.BaseSpecification;
 import com.lq.laboratory.repository.specifi.LaboratorySpecification;
@@ -36,6 +37,9 @@ public class LaboratoryController {
 
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    LaboratoryRepository laboratoryRepository;
 
 
     @Autowired
@@ -111,7 +115,13 @@ public class LaboratoryController {
     @RequestMapping(value = "/admin/delete", method = RequestMethod.POST)
     public ResponseEntity deleteLab(@RequestBody Map<String, String> map) {
         String id = map.get("id");
-        return EntityFactory.createResponse(laboratoryService.delete(id));
+
+        Laboratory laboratory = laboratoryService.getOne(id);
+        LaboratoryType laboratoryType = laboratory.getLaboratoryType();
+        laboratoryType.getLaboratoryList().remove(laboratory);
+        laboratory.setLaboratoryType(null);
+        laboratoryService.delete(laboratory);
+        return EntityFactory.createResponse("ok");
     }
 
 
