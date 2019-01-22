@@ -2,6 +2,7 @@ package com.lq.laboratory.controller;
 
 import com.google.gson.Gson;
 import com.lq.laboratory.entity.*;
+import com.lq.laboratory.exception.AppointmentException;
 import com.lq.laboratory.repository.specifi.AppointmentSpecification;
 import com.lq.laboratory.repository.specifi.BaseSpecification;
 import com.lq.laboratory.repository.specifi.UserSpecification;
@@ -163,6 +164,17 @@ public class AppointmentController {
     public ResponseEntity delete(@RequestBody Map<String, String> map) {
         String id = map.get("id");
         return EntityFactory.createResponse(appointmentService.delete(id));
+    }
+
+    @RequestMapping(value = "/admin/add", method = RequestMethod.POST)
+    public ResponseEntity add(@RequestBody Appointment appointment) {
+        Date startDate = appointment.getAppointmentDate();
+        if (startDate == null || appointment.getMinute() < 1) throw new AppointmentException("填完时间完整信息");
+        appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));
+
+        Appointment insert = appointmentService.insert(appointment);
+        return EntityFactory.createResponse(insert);
+//        return null;
     }
 
 

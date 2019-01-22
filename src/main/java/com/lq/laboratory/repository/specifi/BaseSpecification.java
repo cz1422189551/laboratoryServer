@@ -3,6 +3,7 @@ package com.lq.laboratory.repository.specifi;
 import com.github.wenhao.jpa.PredicateBuilder;
 import com.github.wenhao.jpa.Specifications;
 import com.lq.laboratory.entity.User;
+import com.lq.laboratory.exception.FormatException;
 import com.lq.laboratory.util.DateUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,7 +61,7 @@ public class BaseSpecification<T> {
     protected static Integer mapObjectToInteger(Map<String, Object> map, String key) {
         if (map.get(key) != null) {
             Object o = map.get(key);
-            Integer i = All;
+            Integer i = null;
             if (o instanceof String) {
             } else {
                 i = (Integer) map.get(key);
@@ -72,9 +73,12 @@ public class BaseSpecification<T> {
     }
 
     protected static Date mapObjectToDate(Map<String, Object> map, String key) {
-        if (map.get(key) != null) {
-            String dateStr = map.get(key) + "";
-            return dateStrToAddDate(dateStr);
+        Object o = map.get(key);
+        List l = (List) o;
+        if (o != null && l.size() > 0) {
+            if (!StringUtils.isEmpty(o)) {
+                return dateStrToAddDate(String.valueOf(o));
+            }
         }
         return null;
     }
@@ -84,7 +88,7 @@ public class BaseSpecification<T> {
         try {
             date = DateUtil.stringToDate(dateStr);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new FormatException("日期有误");
         }
         LocalDate localDate = DateUtil.dateToLocalDate(date);
         return DateUtil.localDateToDate(localDate.plusDays(1));

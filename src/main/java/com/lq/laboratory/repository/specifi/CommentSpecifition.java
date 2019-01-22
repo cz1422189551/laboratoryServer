@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.lq.laboratory.util.Const.All;
+
 public class CommentSpecifition extends BaseSpecification<Comment> {
 
     public static Specification<Comment> findByUser(int userId) {
@@ -54,7 +56,7 @@ public class CommentSpecifition extends BaseSpecification<Comment> {
                     String likeLaboratoryName = "%" + laboratoryName + "%";
                     predicateList.add(cb.like(root.get("laboratory").get("name"), likeLaboratoryName));
                 }
-                if (!(laboratoryType == null)) {     //实验室类型匹配
+                if (laboratoryType != null && laboratoryType != All) {     //实验室类型匹配
                     predicateList.add(cb.equal(root.get("laboratory").get("laboratoryType").get("id"), laboratoryType));
                 }
                 //留言信息
@@ -63,7 +65,7 @@ public class CommentSpecifition extends BaseSpecification<Comment> {
 
                 if (!StringUtils.isEmpty(content)) {     //内容匹配
                     String likeContent = "%" + content + "%";
-                    predicateList.add(cb.like(root.get("userName"), likeContent));
+                    predicateList.add(cb.like(root.get("commentContent"), likeContent));
                 }
                 Date date = mapObjectToDate(map, "date");
                 if (!(date == null)) {     //日期

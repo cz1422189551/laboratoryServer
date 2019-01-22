@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static com.lq.laboratory.util.Const.APPOINTING;
+import static com.lq.laboratory.util.Const.All;
 
 public class AppointmentSpecification extends BaseSpecification<Appointment> {
 
@@ -260,7 +261,7 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
                     String likeLaboratoryName = "%" + laboratoryName + "%";
                     predicateList.add(cb.like(root.get("laboratory").get("name"), likeLaboratoryName));
                 }
-                if (!(laboratoryType == null)) {     //实验室类型匹配
+                if (laboratoryType != null && laboratoryType != All) {     //实验室类型匹配
                     predicateList.add(cb.equal(root.get("laboratory").get("laboratoryType").get("id"), laboratoryType));
                 }
                 //预约信息
@@ -301,9 +302,6 @@ public class AppointmentSpecification extends BaseSpecification<Appointment> {
             "or appointment_date<='2018-12-19 09:00' and (end_date>'2018-12-19 09:00'and end_date<='2018-12-19 10:00')\n" +
             "or (appointment_date>='2018-12-19 09:00' and appointment_date<'2018-12-19 10:00' )\n" +
             ")";
-
-
-
 
 
 }
