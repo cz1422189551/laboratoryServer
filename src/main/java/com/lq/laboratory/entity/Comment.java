@@ -1,28 +1,22 @@
 package com.lq.laboratory.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
+
 
 @AllArgsConstructor
-
 @NoArgsConstructor
-
 @Entity
 @Data
-public class Comment extends BaseEntity  {
+public class Comment extends BaseEntity {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,9 +24,8 @@ public class Comment extends BaseEntity  {
     private Laboratory laboratory;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user")
-
     private User user;
 
 
@@ -59,7 +52,7 @@ public class Comment extends BaseEntity  {
 
 
     //评论时间
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date time;
 
 

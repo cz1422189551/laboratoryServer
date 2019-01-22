@@ -60,8 +60,10 @@ public class User extends BaseEntity {
     protected String department;
 
     @OneToMany(
-            cascade = CascadeType.ALL
-            , fetch = FetchType.LAZY)
+            mappedBy = "user"
+            , cascade = CascadeType.ALL
+            , fetch = FetchType.EAGER
+    )
     @JsonIgnore
     private List<Comment> commentList;
 

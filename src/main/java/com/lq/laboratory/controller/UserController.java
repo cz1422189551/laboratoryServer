@@ -20,11 +20,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.lq.laboratory.util.Const.ADMIN;
 import static com.lq.laboratory.util.Const.STUDENT;
 import static com.lq.laboratory.util.Const.TEACHER;
 
@@ -144,6 +143,31 @@ public class UserController {
 
         return EntityFactory.createResponse(user, "注册成功");
 
+    }
+
+
+    @RequestMapping(value = "/admin/type/cascade")
+    public List<Map<String, Object>> adminQueryCascade() {
+        List<User> all = userService.getAll();
+        Map<Integer, List<User>> collect = all.stream().collect(Collectors.groupingBy(User::getUserType));
+
+        List<Map<String, Object>> result = collect.entrySet().stream().map(entry -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("label", FormatUtil.userTypeToStr(entry.getKey()));
+            map.put("value", entry.getKey() + "_");
+
+            List<Map<String, Object>> collect1 = entry.getValue().stream().map(v -> {
+                Map<String, Object> childrenMap = new HashMap<>();
+                childrenMap.put("label", v.getUserName());
+                childrenMap.put("value", v.getId());
+                childrenMap.put("children", null);
+//                childrenMap.put("tel", v.getTel());
+                return childrenMap;
+            }).collect(Collectors.toList());
+            map.put("children", collect1);
+            return map;
+        }).collect(Collectors.toList());
+        return result;
     }
 
 

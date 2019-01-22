@@ -175,7 +175,7 @@ public class LaboratoryController {
                     int value = l.getId();
                     Map<String, Object> map = new HashMap<>();
                     map.put("label", label);
-                    map.put("value", value);
+                    map.put("value", value + "_");
                     List<Map<String, Object>> childrenList = l.getLaboratoryList().stream().map(lb -> {
                         Map<String, Object> childrenMap = new HashMap<>();
                         childrenMap.put("label", lb.getName());
