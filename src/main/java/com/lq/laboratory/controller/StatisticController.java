@@ -2,19 +2,15 @@ package com.lq.laboratory.controller;
 
 import com.lq.laboratory.entity.ResponseEntity;
 import com.lq.laboratory.repository.StatisticService;
-import com.lq.laboratory.services.AppointmentServiceImpl;
-import com.lq.laboratory.util.DateUtilByAndroid;
+import com.lq.laboratory.util.DateUtil;
 import com.lq.laboratory.util.EntityFactory;
 import com.lq.laboratory.util.ParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 import static com.lq.laboratory.util.Const.STUDENT;
 import static com.lq.laboratory.util.Const.TEACHER;
@@ -40,6 +36,14 @@ public class StatisticController {
     public ResponseEntity laboratoryAppointTop10() {
         List top10NumberInWeek = statisticService.findTop10NumberInWeek();
         return EntityFactory.createResponse(top10NumberInWeek);
+    }
+
+    //某天的，每个时间点预约数量
+    @RequestMapping("/day/timePoint")
+    public ResponseEntity oneDayEveryTimePoint() throws ParseException {
+
+        List timePointList = statisticService.findOneDayEveryTimePoint(DateUtil.DateToStr(new Date()));
+        return EntityFactory.createResponse(timePointList);
     }
 
 

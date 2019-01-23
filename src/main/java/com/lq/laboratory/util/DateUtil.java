@@ -1,5 +1,6 @@
 package com.lq.laboratory.util;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -12,6 +13,8 @@ public class DateUtil {
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:mm");
 
     static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+
+    static SimpleDateFormat onlyHourAndMinuteSdf = new SimpleDateFormat("H:mm");
 
     //字符串转LocalDateTime
     public static LocalDateTime stringToLocalDateTime(String dateTime) {
@@ -79,6 +82,11 @@ public class DateUtil {
     //字符串转Date
     public static String DateToStr(Date date) throws ParseException {
         return sdf2.format(date);
+    }
+
+    //字符串转Date
+    public static String timesTampToStr(Timestamp timestamp)   {
+        return onlyHourAndMinuteSdf.format(timestamp);
     }
 
     //加上分钟
