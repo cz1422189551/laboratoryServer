@@ -174,7 +174,6 @@ public class AppointmentController {
 
         Appointment insert = appointmentService.insert(appointment);
         return EntityFactory.createResponse(insert);
-//        return null;
     }
 
 

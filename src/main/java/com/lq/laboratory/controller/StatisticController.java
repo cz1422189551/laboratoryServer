@@ -30,9 +30,16 @@ public class StatisticController {
 
     @RequestMapping("/home")
     public ResponseEntity findEveryMonthAppointCountByYear() {
-        List everyMonthCountByYear = statisticService.findEveryMonthCountByYear(ParamUtil.createMap(2018));
+        List everyMonthCountByYear = statisticService.findEveryMonthCountByYear(ParamUtil.createMap(2019));
         Map<String, Object> map = EntityFactory.getMap(everyMonthCountByYear, "list");
         return EntityFactory.createResponse(map);
+    }
+
+    //最近五日 : top10实验室
+    @RequestMapping("/top/laboratory")
+    public ResponseEntity laboratoryAppointTop10() {
+        List top10NumberInWeek = statisticService.findTop10NumberInWeek();
+        return EntityFactory.createResponse(top10NumberInWeek);
     }
 
 
@@ -44,23 +51,14 @@ public class StatisticController {
 
     @RequestMapping("/startDatePoint")
     public ResponseEntity findStartDatePoint() {
-        List studentList = statisticService.findDatePointUsingByDate(createMap(2018), STUDENT);
-        List teacherList = statisticService.findDatePointUsingByDate(createMap(2018), TEACHER);
+        List studentList = statisticService.findDatePointUsingByDate(createMap(2019), STUDENT);
+        List teacherList = statisticService.findDatePointUsingByDate(createMap(2019), TEACHER);
 
         Map<String, Object> map = EntityFactory.getMap(studentList, "student");
         map.put("teacher", teacherList);
-//        List list = new ArrayList();
-//        list.add(studentMap);
-//        list.add(teacherMap);
-
         return EntityFactory.createResponse(map);
-//        list.stream().map(l -> {
-//            Map<String, Object> map = (Map<String, Object>) l;
-//            return map;
-//        }).forEach( m ->);
+
     }
-
-
 
 
 }

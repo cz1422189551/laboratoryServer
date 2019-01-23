@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.lq.laboratory.util.Const.ADMIN;
 import static com.lq.laboratory.util.Const.All;
 
 public class UserSpecification extends BaseSpecification<User> {
@@ -49,6 +50,8 @@ public class UserSpecification extends BaseSpecification<User> {
                     predicateList.add(cb.equal(root.get("gender"), gender));
                 }
             }
+            //不查管理员账号
+            predicateList.add(cb.notEqual(root.get("userType"), ADMIN));
             Predicate[] pre = new Predicate[predicateList.size()];
             return query.where(predicateList.toArray(pre)).getRestriction();
         };
