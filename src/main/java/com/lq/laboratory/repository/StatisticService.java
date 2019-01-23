@@ -147,6 +147,7 @@ public class StatisticService {
             String timePoint = DateUtil.timesTampToStr(startTime);
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("point", timePoint);
+
             resultMap.put("count", map.get("count"));
             return resultMap;
         }).collect(Collectors.toList());
