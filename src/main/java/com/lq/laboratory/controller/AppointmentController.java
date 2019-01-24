@@ -72,6 +72,7 @@ public class AppointmentController {
 
         Date startDate = appointment.getAppointmentDate();
         appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));
+        appointment.setCreateDate(new Date());
         Appointment insert = appointmentService.insert(appointment);
         return EntityFactory.createResponse(insert);
     }
@@ -171,7 +172,7 @@ public class AppointmentController {
         Date startDate = appointment.getAppointmentDate();
         if (startDate == null || appointment.getMinute() < 1) throw new AppointmentException("填完时间完整信息");
         appointment.setEndDate(DateUtil.addMinute(startDate, appointment.getMinute()));
-
+        appointment.setCreateDate(new Date());
         Appointment insert = appointmentService.insert(appointment);
         return EntityFactory.createResponse(insert);
     }

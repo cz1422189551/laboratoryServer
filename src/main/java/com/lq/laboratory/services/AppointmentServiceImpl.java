@@ -88,6 +88,7 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
         if (!validateTimeConflictUpdate(appointment, user)
                 && !validateDateTime(appointment.getAppointmentDate(), appointment.getEndDate())
                 && !validateAvailDateSeat(appointment, user, MODIFY)) {
+            appointment.setCreateDate(one.getCreateDate());
             appointment.setState(APPOINTING);
             return appointmentRepository.saveAndFlush(appointment);
         }

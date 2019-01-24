@@ -1,24 +1,18 @@
 package com.lq.laboratory.repository;
 
-import com.google.gson.internal.LinkedHashTreeMap;
-import com.lq.laboratory.entity.Appointment;
+
 import com.lq.laboratory.util.DateUtil;
 import com.lq.laboratory.util.FormatUtil;
-import com.sun.org.glassfish.external.statistics.Statistic;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
