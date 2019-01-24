@@ -188,13 +188,4 @@ public class UserController {
     }
 
 
-    @RequestMapping()
-    public ModelAndView page() {
-        return new ModelAndView("user");
-    }
-
-    @RequestMapping("/add/page")
-    public ModelAndView addPage() {
-        return new ModelAndView("add_user");
-    }
 }

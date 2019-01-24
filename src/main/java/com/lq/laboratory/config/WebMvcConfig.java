@@ -2,6 +2,7 @@ package com.lq.laboratory.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -21,4 +22,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .maxAge(3600)
                 .allowCredentials(true);
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/myres/**").addResourceLocations("classpath:/myres/");
+        super.addResourceHandlers(registry);
+    }
+
 }
