@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -134,11 +135,31 @@ public class StatisticService {
     }
 
 
+    public List findEveryMinutes(String dateStr) {
+        StringBuilder sb = new StringBuilder();
+        if (!StringUtils.isEmpty(dateStr)) {
+            sb.append("and date ='" + dateStr + "'");
+        }
+
+        String sql = "select `minute` as 'minutes', count(1) as 'count' \n" +
+                "from appointment \n" +
+                "where 1=1   " +
+                "GROUP BY `minute`";
+
+        List list = executeNativeSql(sql);
+        return list;
+    }
+
     public List findOneDayEveryTimePoint(String dateStr) {
+        StringBuilder sb = new StringBuilder();
+        if (!StringUtils.isEmpty(dateStr)) {
+            sb.append("and date ='" + dateStr + "'");
+        }
+
         String sql = "select appointment_date as 'start' ,count(1) as 'count' \n" +
                 "from appointment_info_view \n" +
-                "where state>0 and date ='" + dateStr + "' group by appointment_date";
-
+                "where 1=1 and state>0  " + sb.toString() +
+                " group by appointment_date";
 
         List list = executeNativeSql(sql);
         List<Map<String, Object>> result = (List<Map<String, Object>>) list.stream().map(start -> {
@@ -147,10 +168,20 @@ public class StatisticService {
             String timePoint = DateUtil.timesTampToStr(startTime);
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("point", timePoint);
-
             resultMap.put("count", map.get("count"));
             return resultMap;
         }).collect(Collectors.toList());
         return result;
+    }
+
+    //统计 类别数量
+    public List findLaboratoryTypeCount() {
+        String sql = "select lt.id,lt.name , count(ap.id) as 'count'\n" +
+                "from laboratory_type lt LEFT  JOIN appointment_info_view ap \n" +
+                "on lt.id = ap.laboratoryTypeId \n" +
+                "group by lt.id";
+        List list = executeNativeSql(sql);
+
+        return list;
     }
 }

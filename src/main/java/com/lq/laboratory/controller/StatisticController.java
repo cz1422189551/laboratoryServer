@@ -46,6 +46,28 @@ public class StatisticController {
         return EntityFactory.createResponse(timePointList);
     }
 
+    //总的，每个时间点预约数量
+    @RequestMapping("/all/timePoint")
+    public ResponseEntity allEveryTimePoint() throws ParseException {
+        List timePointList = statisticService.findOneDayEveryTimePoint(null);
+        return EntityFactory.createResponse(timePointList);
+    }
+
+    //总的，每个时长的数量
+    @RequestMapping("/all/minutes")
+    public ResponseEntity allEveryMinute() throws ParseException {
+        List minuteList = statisticService.findEveryMinutes(null);
+        return EntityFactory.createResponse(minuteList);
+    }
+
+    //实验室类型的数量
+    @RequestMapping("/laboratoryType")
+    public ResponseEntity laboratoryTypeCount() throws ParseException {
+
+        List laboratoryTypeCount = statisticService.findLaboratoryTypeCount();
+        return EntityFactory.createResponse(laboratoryTypeCount);
+    }
+
 
     @RequestMapping("/monitor/disPlay")
     public ResponseEntity disPlayCount() {
