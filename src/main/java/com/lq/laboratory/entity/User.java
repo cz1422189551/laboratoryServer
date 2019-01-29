@@ -32,6 +32,7 @@ public class User extends BaseEntity {
         this.userName = userName;
         this.password = password;
         this.tel = tel;
+        this.name = name;
         this.gender = gender;
         this.userType = userType;
     }
@@ -63,9 +64,28 @@ public class User extends BaseEntity {
             mappedBy = "user"
             , cascade = CascadeType.ALL
             , fetch = FetchType.EAGER
+            //
+            , orphanRemoval = true
     )
     @JsonIgnore
     private List<Comment> commentList;
 
+    @OneToMany(
+            mappedBy = "user"
+            , cascade = CascadeType.ALL
+            , fetch = FetchType.LAZY
+            , orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<Appointment> appointmentList;
+
+    @OneToMany(
+            mappedBy = "user"
+            , cascade = CascadeType.ALL
+            , fetch = FetchType.LAZY
+            , orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<Laboratory> laboratoryList;
 
 }

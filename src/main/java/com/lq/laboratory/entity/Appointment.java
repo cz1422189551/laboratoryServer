@@ -19,11 +19,13 @@ import java.util.Date;
 public class Appointment extends BaseEntity {
 
     //预约的用户
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn
     private User user;
 
     //座位
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn
     private Laboratory laboratory;
 
     //创建时间
@@ -40,7 +42,7 @@ public class Appointment extends BaseEntity {
 
     //日期
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date date;
 
     //分钟

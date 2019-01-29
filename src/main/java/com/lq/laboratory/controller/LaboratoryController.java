@@ -9,6 +9,7 @@ import com.lq.laboratory.repository.specifi.LaboratorySpecification;
 import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.*;
 import com.lq.laboratory.util.DateUtil;
+import com.lq.laboratory.util.DeleteUtil;
 import com.lq.laboratory.util.EntityFactory;
 import com.lq.laboratory.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,9 +118,13 @@ public class LaboratoryController {
         String id = map.get("id");
 
         Laboratory laboratory = laboratoryService.getOne(id);
-        LaboratoryType laboratoryType = laboratory.getLaboratoryType();
-        laboratoryType.getLaboratoryList().remove(laboratory);
+
+        DeleteUtil.deleteLaboratory(laboratory);
+
+        LaboratoryType type = laboratory.getLaboratoryType();
+        type.getLaboratoryList().remove(laboratory);
         laboratory.setLaboratoryType(null);
+
         laboratoryService.delete(laboratory);
         return EntityFactory.createResponse("ok");
     }

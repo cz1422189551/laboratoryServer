@@ -122,7 +122,8 @@ public class UserController {
     @RequestMapping(value = "/admin/delete", method = RequestMethod.POST)
     public ResponseEntity delete(@RequestBody Map<String, String> map) {
         String id = map.get("id");
-        return EntityFactory.createResponse(userService.delete(id));
+        boolean a = userService.delete(id);
+        return EntityFactory.createResponse(a);
     }
 
 

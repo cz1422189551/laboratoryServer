@@ -1,13 +1,11 @@
 package com.lq.laboratory.services;
 
-import com.lq.laboratory.entity.Result;
-import com.lq.laboratory.entity.Student;
-import com.lq.laboratory.entity.Teacher;
-import com.lq.laboratory.entity.User;
+import com.lq.laboratory.entity.*;
 import com.lq.laboratory.exception.UserExpcetion;
 import com.lq.laboratory.repository.BaseRepository;
 import com.lq.laboratory.repository.UserRepository;
 import com.lq.laboratory.services.base.UserService;
+import com.lq.laboratory.util.DeleteUtil;
 import com.lq.laboratory.util.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-
-import static com.lq.laboratory.util.Const.STUDENT;
-import static com.lq.laboratory.util.Const.TEACHER;
 
 @Service
 public class UserServiceImpl extends UserService {
@@ -61,22 +56,31 @@ public class UserServiceImpl extends UserService {
         return res;
     }
 
-//    @Transactional
-//    @Override
-//    public int update(User user) {
-//        if (user == null || user.getId() == 0) throw new RuntimeException("更新对象为null");
-//
-//        return user.getUserType() == STUDENT
-//                ? studentService.update((Student) user)
-//                : teacherService.update((Teacher) user);
-//    }
+    @Override
+    public boolean delete(String id) {
+        User one = getOne(id);
+        List<Laboratory> userLaboratoryList = one.getLaboratoryList();
 
-//    @Transactional
-//    @Override
-//    public boolean delete(String id) {
-//        userRepository.deleteById(Integer.valueOf(id));
-//        return true;
-//    }
+        DeleteUtil.releaseLaboratory(userLaboratoryList);
+        //自己的
+        one.getCommentList().stream().forEach(comment -> {
+            comment.setUser(null);
+            comment.setLaboratory(null);
+        });
+
+        one.getAppointmentList().stream().forEach(ap -> {
+            ap.setLaboratory(null);
+            ap.setUser(null);
+        });
+
+
+        one.getLaboratoryList().clear();
+        one.getCommentList().clear();
+        one.getAppointmentList().clear();
+
+        userRepository.delete(one);
+        return true;
+    }
 
     @Override
     public boolean clear() {
@@ -90,12 +94,13 @@ public class UserServiceImpl extends UserService {
     }
 
 
-    @Override
-    public User getOne(String id) {
-//        User user = null;
-//        user = teacherService.getOne(id) != null ? teacherService.getOne(id) : studentService.getOne(id);
-        return userRepository.getOne(Integer.valueOf(id));
-    }
+//    @Override
+//    public User getOne(String id) {
+////        User user = null;
+////        user = teacherService.getOne(id) != null ? teacherService.getOne(id) : studentService.getOne(id);
+////        return userRepository.findById(Integer.valueOf(id));
+//        return
+//    }
 
 
     @Override

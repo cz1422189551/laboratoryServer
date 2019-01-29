@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -16,22 +17,17 @@ import java.util.List;
 @Entity
 public class Laboratory extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn
     private User user;
 
     private String name;
 
-//    @ManyToMany
-//    @JoinTable(name = "laboratory_seat"
-//            , inverseJoinColumns = @JoinColumn(name = "seat_id")
-//            , joinColumns = @JoinColumn(name = "laboratory_id"))
-//    private List<Seat> seatList;
 
     public Laboratory(int id, User user, String name, int row, int col, boolean enable, Date openDate, Date closeDate, LaboratoryType laboratoryType) {
         super(id);
         this.user = user;
         this.name = name;
-//        this.seatList = seatList;
         this.row = row;
         this.col = col;
         this.enable = enable;
@@ -41,11 +37,10 @@ public class Laboratory extends BaseEntity {
     }
 
 
-//排
-
+    //排
     private int row;
-    //列
 
+    //列
     private int col;
 
     //座位数量
@@ -77,6 +72,26 @@ public class Laboratory extends BaseEntity {
     @JoinColumn
     @JsonIgnoreProperties(value = "laboratoryList")
     private LaboratoryType laboratoryType;
+
+
+    @OneToMany(
+            mappedBy = "laboratory"
+            , cascade = CascadeType.ALL
+            , fetch = FetchType.LAZY
+            ,orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<Appointment> appointmentList;
+
+    @OneToMany(
+            mappedBy = "laboratory"
+            , cascade = CascadeType.ALL
+            , fetch = FetchType.LAZY
+            , orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<Comment> commentList;
+
 
     @Override
     public String toString() {

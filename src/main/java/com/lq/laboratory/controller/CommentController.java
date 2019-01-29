@@ -90,8 +90,18 @@ public class CommentController {
         String id = map.get("id");
         Comment comment = commentService.getOne(id);
         User user = comment.getUser();
+        //移除该节点的评论
         user.getCommentList().remove(comment);
+
+        Laboratory laboratory = comment.getLaboratory();
+        //移除该节点的
+        laboratory.getCommentList().remove(comment);
+//        laboratory.getCommentList().stream().forEach(cm -> {
+//            cm.setLaboratory(null);
+//        });
         comment.setUser(null);
+        comment.setLaboratory(null);
+
         commentService.delete(comment);
         return EntityFactory.createResponse("ok");
     }

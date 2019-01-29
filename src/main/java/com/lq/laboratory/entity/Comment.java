@@ -19,37 +19,18 @@ import java.util.Date;
 public class Comment extends BaseEntity {
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "laboratoryId")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name="laboratoryId")
     private Laboratory laboratory;
 
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user")
+    @JoinColumn(name="userId")
     private User user;
-
-
-//    //自关联
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "fathCommentId")
-//    @JsonBackReference
-//    private Comment parentComment;
 
 
     //评论内容
     private String commentContent;
-
-
-//    @OneToMany(
-//            cascade = CascadeType.ALL
-//            , mappedBy = "parentComment"
-//            , fetch = FetchType.EAGER
-//    )
-//    @Fetch(FetchMode.SUBSELECT)
-//    @JsonIgnoreProperties(value = {"laboratory", "parentComment"})
-//    //改评论的回复
-//    private List<Comment> subComment = new ArrayList<>();
-
 
     //评论时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
