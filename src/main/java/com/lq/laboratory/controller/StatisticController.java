@@ -24,6 +24,7 @@ public class StatisticController {
     StatisticService statisticService;
 
 
+    //2019年每个月的预约数量
     @RequestMapping("/home")
     public ResponseEntity findEveryMonthAppointCountByYear() {
         List everyMonthCountByYear = statisticService.findEveryMonthCountByYear(ParamUtil.createMap(2019));

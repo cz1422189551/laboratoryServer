@@ -39,8 +39,13 @@ public interface AppointmentRepository extends BaseRepository<Appointment, Integ
 
     @Modifying(clearAutomatically = true)
     @Query(nativeQuery = true, value = "update appointment  set state=:finish where  date=:today and appointment_date<:currentDate and state=:used and end_date<:currentDate")
-    int updateAppointStateToFinsh(@Param("finish") int finish, @Param("today") Date today
+    int updateAppointStateToFinish(@Param("finish") int finish, @Param("today") Date today
             , @Param("currentDate") Date currentDate, @Param("used") int used);
+
+    @Modifying(clearAutomatically = true)
+    @Query(nativeQuery = true, value = "update appointment set state =:finish where state in (:APPOINTING,:USE) and end_date <=:currentDate")
+    int updateBeforeDateStateToFinish(@Param("finish") int finish
+            , @Param("APPOINTING") int APPOINTING, @Param("USE") int USE, @Param("currentDate") Date currentDate);
 
 
     @Query(nativeQuery = true, value = "select count(ap.id) as 'sumCount' from appointment ap where ap.state>0 ")
@@ -54,5 +59,6 @@ public interface AppointmentRepository extends BaseRepository<Appointment, Integ
 
     @Query(nativeQuery = true, value = "select count(ap.id) as 'currentDayCancelCount' from appointment ap where ap.state=-1 AND ap.date=:currentDate ")
     int currentDayCancelCount(@Param("currentDate") Date currentDate);
+
 
 }

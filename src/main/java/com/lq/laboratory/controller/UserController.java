@@ -41,22 +41,6 @@ public class UserController {
     }
 
 
-    @RequestMapping("/{userName}/{password}")
-    public ResponseEntity getOneByUserNameAndPassword(@PathVariable("userName") String userName, @PathVariable("password") String password) {
-
-        User user = userService.getUserByUserNameAndPassword(userName, password);
-        return EntityFactory.createResponse(user);
-    }
-
-
-    @RequestMapping("/list/{pageNumber}/{pageSize}")
-    public ResponseEntity list(@PathVariable("pageNumber") int pageNumber
-            , @PathVariable("pageSize") int pageSize) {
-
-        Result<User> list = userService.getList(pageNumber, pageSize);
-        return EntityFactory.createResponse(list);
-    }
-
     @RequestMapping(value = "/admin/getList/search", method = RequestMethod.POST)
     public ResponseEntity search(@RequestBody Map<String, Object> map) throws ParseException {
         int pageNum = (int) map.get("pageNum");
@@ -85,12 +69,6 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity add(String fsFormData) {
-        User u = (User) JsonUtils.fromJson(fsFormData, User.class);
-        return EntityFactory.createResponse(userService.insert(u));
-
-    }
 
     @RequestMapping(value = "/admin/add", method = RequestMethod.POST)
     public ResponseEntity adminAdd(@RequestBody User user) throws UnsupportedEncodingException {
@@ -106,11 +84,6 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseEntity update(String fsFormData) throws UnsupportedEncodingException {
-        User u = (User) JsonUtils.fromJson(fsFormData, User.class);
-        return EntityFactory.createResponse(userService.updateEntity(u));
-    }
 
     @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
     public ResponseEntity adminUpdate(@RequestBody User user) throws UnsupportedEncodingException {
@@ -127,7 +100,7 @@ public class UserController {
     }
 
 
-    //app更新
+    //app更新个人信息
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity save(@RequestParam Map<String, String> map) {
 

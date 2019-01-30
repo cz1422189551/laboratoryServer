@@ -22,12 +22,6 @@ import static com.lq.laboratory.util.Const.STUDENT;
 public class UserServiceImpl extends UserService {
 
 
-    @Autowired
-    StudentServiceImpl studentService;
-
-    @Autowired
-    TeacherServiceImpl teacherService;
-
     UserRepository userRepository;
 
     @Resource(name = "userRepository")
@@ -42,15 +36,8 @@ public class UserServiceImpl extends UserService {
     public User insert(User user) {
         User res = null;
         if (user == null) throw new UserExpcetion("不能添加空值");
-//        User byUserName = userRepository.findByUserName(user.getUserName());
-//        if (byUserName != null && !"".equals(byUserName.getUserName())) throw new UserExpcetion("该账号已被注册");
         try {
             res = userRepository.saveAndFlush(user);
-//            if (user.getUserType() == STUDENT) {
-//                res = studentService.insert((Student) user);
-//            } else if (user.getUserType() == TEACHER) {
-//                res = teacherService.insert((Teacher) user);
-//            }
         } catch (RuntimeException e) {
             throw new UserExpcetion("账号已被注册");
         }

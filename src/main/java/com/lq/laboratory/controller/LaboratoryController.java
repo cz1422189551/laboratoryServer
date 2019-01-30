@@ -27,8 +27,6 @@ public class LaboratoryController {
     @Autowired
     LaboratoryServiceImpl laboratoryService;
 
-//    @Autowired
-//    LaboratorySeatServiceImpl laboratorySeatService;
 
     @Autowired
     UserServiceImpl userService;
@@ -166,6 +164,7 @@ public class LaboratoryController {
         return EntityFactory.createResponse(queryAll(map));
     }
 
+    //构造级联关系
     @RequestMapping(value = "/admin/type/cascade")
     public List<Map<String, Object>> adminQueryCascade() {
         List<LaboratoryType> all = laboratoryTypeService.getAll();

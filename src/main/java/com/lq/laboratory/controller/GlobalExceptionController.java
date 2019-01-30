@@ -14,12 +14,13 @@ import java.sql.SQLException;
 @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionController {
-
+    //预约操作异常
     @ExceptionHandler(AppointmentException.class)
     public ResponseEntity appointException(Exception e) {
         return EntityFactory.createErrorResponse(EntityFactory.APPOINT_ERROR, e);
     }
 
+    //用户操作异常
     @ExceptionHandler(UserExpcetion.class)
     public ResponseEntity userException(Exception e) {
         return EntityFactory.createErrorResponse(EntityFactory.USER_ERROR, e);

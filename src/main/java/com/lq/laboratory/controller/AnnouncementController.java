@@ -26,22 +26,15 @@ public class AnnouncementController {
     @Autowired
     IService<Announcement> service;
 
-    @RequestMapping("/one/{id}")
-    public ResponseEntity getOne(@PathVariable("id") String id) {
-
-        Announcement announcement = service.getOne(id);
-        return EntityFactory.createResponse(announcement);
-    }
-
-    @RequestMapping("/list/{pageNumber}/{pageSize}")
-    public ResponseEntity getList(@PathVariable("pageNumber") int pageNumber
-            , @PathVariable("pageSize") int pageSize) {
-        Result<Announcement> list = service.getList(pageNumber, pageSize);
-        return EntityFactory.createResponse(list);
+    //app:获取公告列表（分页）
+    @RequestMapping("/getList")
+    public Result getList(@RequestParam Map<String, String> map) {
+        Result<Announcement> list = service.getList(Integer.valueOf(map.get("pageNum")), Integer.valueOf(map.get("pageSize")));
+        return list;
     }
 
     @RequestMapping(value = "/admin/getList/search", method = RequestMethod.POST)
-    public ResponseEntity adminGetList(@RequestBody Map<String, Object> map) throws ParseException {
+    public ResponseEntity adminGetList(@RequestBody Map<String, Object> map)   {
         int pageNum = (int) map.get("pageNum");
         int pageSize = (int) map.get("pageSize");
 
@@ -53,17 +46,6 @@ public class AnnouncementController {
     }
 
 
-    @RequestMapping("/getList")
-    public Result getList(@RequestParam Map<String, String> map) {
-        Result<Announcement> list = service.getList(Integer.valueOf(map.get("pageNum")), Integer.valueOf(map.get("pageSize")));
-        return list;
-    }
-
-
-    @RequestMapping("/all")
-    public ResponseEntity getAll() {
-        return EntityFactory.createResponse(service.getAll());
-    }
 
 
     @RequestMapping(value = "/admin/add", method = RequestMethod.POST)
@@ -71,16 +53,6 @@ public class AnnouncementController {
         setDateTime(announcement);
         return EntityFactory.createResponse(service.insert(announcement));
     }
-
-    @RequestMapping(value = "/insert")
-    public ResponseEntity add() {
-        for (int i = 1; i < 20; i++) {
-            Announcement announcement = new Announcement("公告" + i, "公告" + i, "admin", new Date(), DateUtil.localDateToDate(LocalDate.now()));
-            EntityFactory.createResponse(service.insert(announcement));
-        }
-        return null;
-    }
-
 
     @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
     public ResponseEntity update(@RequestBody Announcement announcement) {
@@ -100,8 +72,5 @@ public class AnnouncementController {
 
     }
 
-    @RequestMapping()
-    public ModelAndView page() {
-        return new ModelAndView("announcement");
-    }
+
 }

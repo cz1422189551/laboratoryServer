@@ -31,6 +31,7 @@ public class CommentController {
     UserService userService;
 
 
+    //app：获取我的评论列表 （分页）
     @RequestMapping("/getList")
     public Result<Comment> getList(@RequestParam Map<String, String> map) {
         int useId = Integer.valueOf(map.get("user"));
@@ -41,6 +42,7 @@ public class CommentController {
         return result;
     }
 
+    //app : 获取某实验室下的评论 （分页）
     @RequestMapping("/getList/laboratory")
     public Result<Comment> getListInLaboratory(@RequestParam Map<String, String> map) {
         int laboratoryId = Integer.valueOf(map.get("laboratory"));
@@ -51,6 +53,7 @@ public class CommentController {
         return result;
     }
 
+    //app : 添加评论
     @RequestMapping("/add")
     public ResponseEntity<Comment> add(@RequestParam Map<String, String> map) {
         String json = map.get("comment");
@@ -59,8 +62,9 @@ public class CommentController {
         return EntityFactory.createResponse(insert);
     }
 
+    //条件查询
     @RequestMapping(value = "/admin/getList/search", method = RequestMethod.POST)
-    public ResponseEntity search(@RequestBody Map<String, Object> map) throws ParseException {
+    public ResponseEntity search(@RequestBody Map<String, Object> map) {
         int pageNum = (int) map.get("pageNum");
         int pageSize = (int) map.get("pageSize");
         Page<Comment> page = commentService.getList(
@@ -71,7 +75,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
-    public ResponseEntity adminUpdate(@RequestBody Comment comment) throws UnsupportedEncodingException {
+    public ResponseEntity adminUpdate(@RequestBody Comment comment) {
         comment.setTime(new Date());
         Comment comment1 = commentService.updateEntity(comment);
         return EntityFactory.createResponse(comment1);
@@ -79,12 +83,12 @@ public class CommentController {
 
 
     @RequestMapping(value = "/admin/add", method = RequestMethod.POST)
-    public ResponseEntity updateAppointment(@RequestBody Comment comment) throws ParseException {
+    public ResponseEntity updateAppointment(@RequestBody Comment comment)  {
         comment.setTime(new Date());
         return EntityFactory.createResponse(commentService.insert(comment));
     }
 
-    //实验室删除
+    //删除
     @RequestMapping(value = "/admin/delete", method = RequestMethod.POST)
     public ResponseEntity deleteLab(@RequestBody Map<String, String> map) {
         String id = map.get("id");
@@ -96,9 +100,6 @@ public class CommentController {
         Laboratory laboratory = comment.getLaboratory();
         //移除该节点的
         laboratory.getCommentList().remove(comment);
-//        laboratory.getCommentList().stream().forEach(cm -> {
-//            cm.setLaboratory(null);
-//        });
         comment.setUser(null);
         comment.setLaboratory(null);
 

@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -53,9 +53,20 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment> {
      */
     @Transactional
     public int updateUsingToFinish(Date date, Date currentDate) {
-        return appointmentRepository.updateAppointStateToFinsh(
+        return appointmentRepository.updateAppointStateToFinish(
                 FINISH, date, currentDate, APPOINTING
         );
+    }
+
+    /**
+     * 将过去时间里，使用中，正在使用的预约状态，更改为已完成
+     *
+     * @return
+     */
+    @Transactional
+    public int updateBeforeDateStateToFinish() {
+        Date currentDate = DateUtil.localDateTimeToDate(LocalDateTime.now());
+        return appointmentRepository.updateBeforeDateStateToFinish(FINISH, APPOINTING, USING, currentDate);
     }
 
 
