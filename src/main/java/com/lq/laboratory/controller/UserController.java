@@ -140,9 +140,8 @@ public class UserController {
     //app注册
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestParam Map<String, String> map) {
-        User u = getUserByUserType(map);
+        User u = (User) JsonUtils.fromJson(map.get("user"), User.class);
         User user = userService.insert(u);
-
         return EntityFactory.createResponse(user, "注册成功");
 
     }
@@ -172,21 +171,7 @@ public class UserController {
     }
 
 
-    private User getUserByUserType(Map<String, String> map) {
-        String userType = map.get("userType");
-        User u = null;
-        try {
-            if (STUDENT == Integer.valueOf(userType)) {
-                u = (Student) JsonUtils.fromJson(map.get("user"), Student.class);
-            } else if (TEACHER == Integer.valueOf(userType)) {
-                u = (Teacher) JsonUtils.fromJson(map.get("user"), Teacher.class);
-            }
-        } catch (Exception e) {
-            throw new UserExpcetion(e);
-        }
 
-        return u;
-    }
 
 
 }

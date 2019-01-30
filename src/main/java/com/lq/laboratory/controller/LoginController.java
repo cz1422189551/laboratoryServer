@@ -15,12 +15,13 @@ public class LoginController {
     @Autowired
     UserServiceImpl service;
 
-
+    //app登录
     @RequestMapping(value = "/app/login", method = RequestMethod.POST)
     public User appLogin(String userName, String password) {
         return login(userName, password);
     }
 
+    //后台管理员登录
     @RequestMapping(value = "/web/login", method = RequestMethod.POST)
     public ResponseEntity webLogin(@RequestBody User user) {
         User login = login(user.getUserName(), user.getPassword());
