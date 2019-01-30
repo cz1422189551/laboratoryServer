@@ -18,14 +18,12 @@ public class LaboratoryServiceImpl extends BaseServiceImpl<Laboratory> {
         super.setRepository(repository);
     }
 
-
-
-
-//    @Transactional
-//    @Override
-//    public int update(Laboratory laboratory) {
-////        Laboratory one = getOne(laboratory.getId() + "");
-////        if (one == null) return 0;
-//        return repository.saveAndFlush(laboratory) == null ? 0 : 1;
-//    }
+    @Override
+    public Laboratory updateEntity(Laboratory laboratory) {
+        Laboratory one = getOne(laboratory.getId() + "");
+        laboratory.setAppointmentList(one.getAppointmentList());
+        laboratory.setCommentList(one.getCommentList());
+        laboratory.setUser(one.getUser());
+        return repository.saveAndFlush(laboratory);
+    }
 }

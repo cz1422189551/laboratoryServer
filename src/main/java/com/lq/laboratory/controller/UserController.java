@@ -109,12 +109,12 @@ public class UserController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity update(String fsFormData) throws UnsupportedEncodingException {
         User u = (User) JsonUtils.fromJson(fsFormData, User.class);
-        return EntityFactory.createResponse(userService.update(u));
+        return EntityFactory.createResponse(userService.updateEntity(u));
     }
 
     @RequestMapping(value = "/admin/update", method = RequestMethod.POST)
     public ResponseEntity adminUpdate(@RequestBody User user) throws UnsupportedEncodingException {
-//        User u = (User) JsonUtils.fromJson(fsFormData, User.class);
+
         User user1 = userService.updateEntity(user);
         return EntityFactory.createResponse(user1);
     }
@@ -130,7 +130,8 @@ public class UserController {
     //app更新
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity save(@RequestParam Map<String, String> map) {
-        User u = getUserByUserType(map);
+
+        User u = (User) JsonUtils.fromJson(map.get("user"), User.class);
         User user = userService.updateEntity(u);
         if (user != null) return EntityFactory.createResponse(user, "保存成功");
         throw new UserExpcetion("保存失败");
@@ -162,7 +163,6 @@ public class UserController {
                 childrenMap.put("label", v.getUserName());
                 childrenMap.put("value", v.getId());
                 childrenMap.put("children", null);
-//                childrenMap.put("tel", v.getTel());
                 return childrenMap;
             }).collect(Collectors.toList());
             map.put("children", collect1);

@@ -3,18 +3,13 @@ package com.lq.laboratory.controller;
 import com.lq.laboratory.entity.*;
 
 import com.lq.laboratory.repository.LaboratoryRepository;
-import com.lq.laboratory.repository.specifi.AppointmentSpecification;
-import com.lq.laboratory.repository.specifi.BaseSpecification;
 import com.lq.laboratory.repository.specifi.LaboratorySpecification;
-import com.lq.laboratory.repository.specifi.UserSpecification;
 import com.lq.laboratory.services.*;
-import com.lq.laboratory.util.DateUtil;
 import com.lq.laboratory.util.DeleteUtil;
 import com.lq.laboratory.util.EntityFactory;
 import com.lq.laboratory.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
@@ -24,7 +19,6 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.lq.laboratory.util.Const.APPOINTING;
 import static com.lq.laboratory.util.Const.STUDENT;
 
 @RestController
@@ -51,7 +45,10 @@ public class LaboratoryController {
     @RequestMapping(value = "/type/admin/delete", method = RequestMethod.POST)
     public ResponseEntity delete(@RequestBody Map<String, String> map) {
         String id = map.get("id");
-        return EntityFactory.createResponse(laboratoryTypeService.delete(id));
+        LaboratoryType type = laboratoryTypeService.getOne(id);
+        DeleteUtil.deleteLaboratoryType(type);
+        laboratoryTypeService.delete(type);
+        return EntityFactory.createResponse(true);
     }
 
     //类别新增
@@ -124,7 +121,6 @@ public class LaboratoryController {
         LaboratoryType type = laboratory.getLaboratoryType();
         type.getLaboratoryList().remove(laboratory);
         laboratory.setLaboratoryType(null);
-
         laboratoryService.delete(laboratory);
         return EntityFactory.createResponse("ok");
     }

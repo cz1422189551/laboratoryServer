@@ -19,7 +19,7 @@ public class LaboratoryType extends BaseEntity {
 
     @OneToMany(
             mappedBy = "laboratoryType",
-            fetch = FetchType.LAZY, cascade = CascadeType.ALL
+            fetch = FetchType.LAZY, cascade = CascadeType.REMOVE
             , orphanRemoval = true
     )
     private List<Laboratory> laboratoryList;

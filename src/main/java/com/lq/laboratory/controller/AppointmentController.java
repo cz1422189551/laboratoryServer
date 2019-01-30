@@ -164,7 +164,10 @@ public class AppointmentController {
     @RequestMapping(value = "/admin/delete", method = RequestMethod.POST)
     public ResponseEntity delete(@RequestBody Map<String, String> map) {
         String id = map.get("id");
-        return EntityFactory.createResponse(appointmentService.delete(id));
+        Appointment one = appointmentService.getOne(id);
+        DeleteUtil.releaseAppointment(one);
+        appointmentService.delete(one);
+        return EntityFactory.createResponse(true);
     }
 
     @RequestMapping(value = "/admin/add", method = RequestMethod.POST)

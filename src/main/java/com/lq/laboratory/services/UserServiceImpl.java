@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+import static com.lq.laboratory.util.Const.STUDENT;
+
 @Service
 public class UserServiceImpl extends UserService {
 
@@ -87,20 +89,20 @@ public class UserServiceImpl extends UserService {
         return false;
     }
 
+    @Override
+    public User updateEntity(User user) {
+        User one = getOne(user.getId() + "");
+        user.setCommentList(one.getCommentList());
+        user.setAppointmentList(one.getAppointmentList());
+        user.setLaboratoryList(one.getLaboratoryList());
+        return userRepository.saveAndFlush(user);
+    }
+
 
     @Override
     public Map<Integer, List<User>> getGroupUser() {
         return null;
     }
-
-
-//    @Override
-//    public User getOne(String id) {
-////        User user = null;
-////        user = teacherService.getOne(id) != null ? teacherService.getOne(id) : studentService.getOne(id);
-////        return userRepository.findById(Integer.valueOf(id));
-//        return
-//    }
 
 
     @Override
