@@ -9,7 +9,6 @@ public class HomeController {
     //首页
     @RequestMapping("/")
     public String home() {
-        System.out.println("home");
         return "index.html";
     }
 
